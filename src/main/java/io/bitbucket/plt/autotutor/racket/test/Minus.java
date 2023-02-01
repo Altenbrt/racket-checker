@@ -13,15 +13,15 @@ public class Minus extends Expression{
     @Override
     public String evaluate(List<Expression> list) {
         boolean first = true;
-        int result = 0;
+        float result = 0;
         for (Expression e : list) {
             if (first) {
-                result = Integer.valueOf(e.evaluate(this));
+                result = Float.valueOf(e.evaluate(this));
                 first = false;
             } else
-                result -= Integer.valueOf(e.evaluate(this));
+                result -= Float.valueOf(e.evaluate(this));
         }
-        return Integer.toString(result);
+        return Float.toString(result);
     }
 
     @Override

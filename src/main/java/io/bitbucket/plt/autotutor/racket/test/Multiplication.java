@@ -12,11 +12,11 @@ public class Multiplication extends Expression{
 
     @Override
     public String evaluate(List<Expression> list) {
-        int result = 1;
+        float result = 1;
         for (Expression e : list) {
-            result *= Integer.valueOf(e.evaluate(this));
+            result *= Float.valueOf(e.evaluate(this));
         }
-        return Integer.toString(result);
+        return Float.toString(result);
     }
 
     @Override
