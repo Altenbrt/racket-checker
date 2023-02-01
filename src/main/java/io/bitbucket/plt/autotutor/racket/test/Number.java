@@ -1,19 +1,19 @@
 package io.bitbucket.plt.autotutor.racket.test;
 
 public class Number extends Expression{
-    private final int value;
+    private final float value;
 
-    public Number(int value) {
+    public Number(float value) {
         this.value = value;
     }
 
     @Override
     public String evaluate(Expression e) {
-        return Integer.toString(value);
+        return Float.toString(value);
     }
 
     @Override
     public String toString() {
-        return "Number" + "(" + super.getId() + ")";
+        return "Number " + value + " (" + super.getId() + ")";
     }
 }

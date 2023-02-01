@@ -55,6 +55,8 @@ public class DrRacketInterpreter {
 	private String errorOutput;
 	private String xml;
 	private String rktFile;
+	//Provisorisch
+	private Expression expression;
 
 	public DrRacketInterpreter(String rktFile) throws Exception {
 
@@ -201,12 +203,13 @@ public class DrRacketInterpreter {
 
 
 
-			if(now.contains("type=\"Number\"")) {	//int
-				Pattern pattern = Pattern.compile("\\D+");
+			if(now.contains("type=\"Number\"")) {	//float
+				Pattern pattern = Pattern.compile("\"[^\"]*\"");
 				Matcher matcher = pattern.matcher(now);
-				String[] s = pattern.split(now);	//Split gibt Strings zwischen den Matches aus
-				//Deswegen 2, weil 0 ein leerer String ist und 1 der line=
-				exacc.addPart(new Number(Integer.valueOf(s[2])));
+
+				String[] str = matcher.results().map(x -> x.group()).map(x -> x.replaceAll("\"", "")).toArray(String[]::new);
+				//Deswegen 2, weil 0 die line ist ist und 1 der typ
+				exacc.addPart(new Number(Float.valueOf(str[2])));
 
 			}
 			if (now.contains("</paren>")) {	//Entschachtelung
@@ -239,11 +242,16 @@ public class DrRacketInterpreter {
 		}
 		System.out.println(ex);
 		System.out.println("---");
+		expression = ex;
 		System.out.println(ex.evaluate(new Expression()));
 
 
 		System.out.println("CODE ENDE--------------------------");
 
+	}
+
+	public String evaluateExpressions() {
+		return expression.evaluate(new Expression());
 	}
 
 	private String prettyPrint(String xml) throws SAXException, IOException, ParserConfigurationException,

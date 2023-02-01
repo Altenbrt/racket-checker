@@ -14,6 +14,8 @@ public class Plus extends Expression{
     public String evaluate(List<Expression> list) {
         float result = 0;
         for (Expression e : list) {
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            System.out.println(e.evaluate(new Expression()));
             result += Float.valueOf(e.evaluate(this));
         }
         return Float.toString(result);
