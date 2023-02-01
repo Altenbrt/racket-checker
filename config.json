@@ -1,0 +1,5 @@
+{
+	"expected-folder": "expected",
+	"results-folder": "results",
+	"racket-path": "/Applications/Racket v6.8/bin/racket"
+}
