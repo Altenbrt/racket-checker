@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -57,6 +58,7 @@ public class DrRacketInterpreter {
 	private String rktFile;
 	//Provisorisch
 	private Expression expression;
+	private List<Expression> expressionList;	//alle expressions, die gegeben wurden
 
 	public DrRacketInterpreter(String rktFile) throws Exception {
 
@@ -110,7 +112,6 @@ public class DrRacketInterpreter {
 		stack.push(exacc);
 		exacc = temp;
 
-		List<Expression> expressionList;	//Anzahl
 
 		List<CustomFunction> customFunctionList = new LinkedList<>();
 		boolean customFunctionListInitialisation = false;
@@ -257,6 +258,10 @@ public class DrRacketInterpreter {
 
 	public String evaluateExpressions() {
 		return expression.evaluate(new Expression());
+	}
+
+	public List<String> getAllExpressionEvaluations() {
+		return expressionList.stream().map(x -> x.evaluate(new Expression())).collect(Collectors.toList());
 	}
 
 	private String prettyPrint(String xml) throws SAXException, IOException, ParserConfigurationException,
