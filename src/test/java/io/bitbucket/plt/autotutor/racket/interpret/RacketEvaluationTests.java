@@ -13,6 +13,64 @@ public class RacketEvaluationTests {
     void testMultiplication() throws Exception {
         //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
 
+        String s = "(* 1 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(* 0 1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(* 1 (* 2 1))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(* 1 (* 2 1) 1 (* 0 5) 0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(* (* 2 2) (* 1 (* 3 2)))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(24), inter.evaluateExpressions());
+
+        s = "(* 0.5 0.25)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString((float)0.125), inter.evaluateExpressions());
+
+        s = "(* -2 -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(* -2 -1 -4)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-8), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testMinus() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
+        String s = "(- 1 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(- 2 (- 2 1))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(- 1 (- 2 1) 1 (- 0 5))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(4), inter.evaluateExpressions());
+
+        s = "(- (- 2 2) (- 1 (- 3 2)))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testPlus() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
         String s = "(+ 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
         assertEquals(Float.toString(2), inter.evaluateExpressions());
@@ -39,23 +97,35 @@ public class RacketEvaluationTests {
     }
 
     @Test
-    void testMinus() throws Exception {
+    void testDivision() throws Exception {
         //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
 
-        String s = "(- 1 1)";
+        String s = "(/ 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
-        assertEquals(Float.toString(0), inter.evaluateExpressions());
-
-        s = "(- 2 (- 2 1))";
-        inter = new DrRacketInterpreter(s);
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
-        s = "(- 1 (- 2 1) 1 (- 0 5))";
-        inter = new DrRacketInterpreter(s);
-        assertEquals(Float.toString(4), inter.evaluateExpressions());
-
-        s = "(- (- 2 2) (- 1 (- 3 2)))";
+        s = "(/ 0 1)";
         inter = new DrRacketInterpreter(s);
         assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(/ 1 (/ 2 1))";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString((float)0.5), inter.evaluateExpressions());
+
+        s = "(/ 1 (/ 2 1) 1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString((float)0.5), inter.evaluateExpressions());
+
+        s = "(/ 0.5 0.25)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(/ -2 -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(/ -2 -1 -4)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString((float)-0.5), inter.evaluateExpressions());
     }
 }
