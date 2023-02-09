@@ -1,8 +1,5 @@
 package io.bitbucket.plt.autotutor.racket.test;
 
-import org.antlr.v4.runtime.misc.NotNull;
-
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 

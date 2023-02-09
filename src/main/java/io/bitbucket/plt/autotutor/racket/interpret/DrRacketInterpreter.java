@@ -110,6 +110,8 @@ public class DrRacketInterpreter {
 		stack.push(exacc);
 		exacc = temp;
 
+		List<Expression> expressionList;	//Anzahl
+
 		List<CustomFunction> customFunctionList = new LinkedList<>();
 		boolean customFunctionListInitialisation = false;
 		boolean head = false;
@@ -240,11 +242,14 @@ public class DrRacketInterpreter {
 
 			}
 		}
+		expressionList = ex.getParts();
 		System.out.println(ex);
 		System.out.println("---");
 		expression = ex;
 		System.out.println(ex.evaluate(new Expression()));
-
+		System.out.println("---");
+		expressionList.forEach(x -> System.out.println(x));
+		expressionList.stream().map(x -> x.evaluate(new Expression())).forEach(x -> System.out.println(x));
 
 		System.out.println("CODE ENDE--------------------------");
 
