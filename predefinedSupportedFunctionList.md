@@ -1,21 +1,23 @@
 # A List of the supportet functions
 The "" are only for formating purposes and can be ignored
 
+- CustomFunction
+## On Numbers
 - "+"
 - "-"
 - "*"
 - /
-- CustomFunction
-
-# A List of the functions we are planing to Support
-The "" are only for formating purposes and can be ignored
-
-## On Numbers
 - <
 - <=
 - =
 - ">"
 - ">="
+
+
+# A List of the functions we are planing to Support
+The "" are only for formating purposes and can be ignored
+
+## On Numbers
 - abs
 - add1
 - ceiling
