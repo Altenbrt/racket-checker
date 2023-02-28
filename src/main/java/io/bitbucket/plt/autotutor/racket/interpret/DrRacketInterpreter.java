@@ -162,6 +162,27 @@ public class DrRacketInterpreter {
 				exacc.addPart(new Division());
 				continue;
 			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"&lt;\"")) {	//Less Than
+				exacc.addPart(new LessThan());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"&gt;\"")) {	//Greater Than
+				exacc.addPart(new GreaterThan());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"=\"")) {	//Equal
+				exacc.addPart(new Equal());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"&lt;=\"")) {	//Lesser Or Equal Than
+				exacc.addPart(new LessOrEqualThan());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"&gt;=\"")) {	//Greater Or Equal Than
+				exacc.addPart(new GreaterOrEqualThan());
+				continue;
+			}
+
 			//Custome Funktion
 			if (now.contains("type=\"Name\"") && customFunctionListInitialisation && !head) {	//Parameter
 				String s = now.split("value=\"")[1];
