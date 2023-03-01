@@ -321,4 +321,251 @@ public class RacketEvaluationTests {
         inter = new DrRacketInterpreter(s);
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
+
+    @Test
+    void testAbsolute() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
+        String s = "(abs 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(abs -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(abs 0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
+
+        s = "(abs -0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
+
+        s = "(abs 4 7 8)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(4), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testAdd1() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
+        String s = "(add1 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(add1 -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(add1 0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1.5f), inter.evaluateExpressions());
+
+        s = "(add1 -0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
+
+        s = "(add1 4 7 8)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(5), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testCeiling() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
+        String s = "(ceiling 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(ceiling 1.1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(ceiling 1.8)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(ceiling -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), inter.evaluateExpressions());
+
+        s = "(ceiling -1.1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), inter.evaluateExpressions());
+
+        s = "(ceiling 0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(ceiling -0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(ceiling -0.01)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(ceiling 4.8 3 1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(5), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testEven() throws Exception {
+        String s = "(even? 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(even? 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(true), inter.evaluateExpressions());
+
+        s = "(even? 0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(true), inter.evaluateExpressions());
+
+        s = "(even? 9)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(even? 9 10 1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testExp() throws Exception {
+        String s = "(exp 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(3), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(exp 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(7), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(exp 0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(exp 0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(exp 2 1 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(7), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+    }
+
+    @Test
+    void testFloor() throws Exception {
+        //String rktFile = IOUtils.toString(ClassLoader.getSystemResourceAsStream("Demo.rkt"), Charset.defaultCharset());
+
+        String s = "(floor 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(floor 1.1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(floor 1.8)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(floor -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), inter.evaluateExpressions());
+
+        s = "(floor -1.1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-2), inter.evaluateExpressions());
+
+        s = "(floor 0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(floor -0)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), inter.evaluateExpressions());
+
+        s = "(floor -0.01)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), inter.evaluateExpressions());
+
+        s = "(floor 4.8 3 1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(4), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testLog() throws Exception {
+        String s = "(log 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(log -1)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(0), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(log 3)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(log 0.5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+
+        s = "(log 2 1 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
+    }
+
+    @Test
+    void testMax() throws Exception {
+        String s = "(max 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(max 1 2 3)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(3), inter.evaluateExpressions());
+
+        s = "(max -1 -6 -3)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-1), inter.evaluateExpressions());
+
+        s = "(max 10 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(10), inter.evaluateExpressions());
+
+        s = "(max 10 20 5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(20), inter.evaluateExpressions());
+    }
+
+    @Test
+    void testMin() throws Exception {
+        String s = "(min 1)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(min 1 2 3)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+
+        s = "(min -1 -6 -3)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(-6), inter.evaluateExpressions());
+
+        s = "(min 10 2)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(2), inter.evaluateExpressions());
+
+        s = "(min 10 1 5)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(1), inter.evaluateExpressions());
+    }
 }

@@ -184,6 +184,42 @@ public class DrRacketInterpreter {
 				exacc.addPart(new GreaterOrEqualThan());
 				continue;
 			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"abs\"")) {	//Absolute
+				exacc.addPart(new Absolute());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"add1\"")) {	//Add1
+				exacc.addPart(new Add1());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"ceiling\"")) {	//Ceiling
+				exacc.addPart(new Ceiling());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"even?\"")) {	//Even
+				exacc.addPart(new Even());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"exp\"")) {	//Exp
+				exacc.addPart(new Exp());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"floor\"")) {	//Floor
+				exacc.addPart(new Floor());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"log\"")) {	//Log
+				exacc.addPart(new Log());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"max\"")) {	//Max
+				exacc.addPart(new Max());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"min\"")) {	//Min
+				exacc.addPart(new Min());
+				continue;
+			}
 
 			//Custome Funktion
 			if (now.contains("type=\"Name\"") && customFunctionListInitialisation && !head) {	//Parameter
