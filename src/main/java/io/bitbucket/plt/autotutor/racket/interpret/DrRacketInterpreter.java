@@ -220,6 +220,22 @@ public class DrRacketInterpreter {
 				exacc.addPart(new Min());
 				continue;
 			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"modulo\"")) {	//Modulo
+				exacc.addPart(new Modulo());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"negative?\"")) {	//Negative
+				exacc.addPart(new Negative());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"odd?\"")) {	//Odd
+				exacc.addPart(new Odd());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"positive?\"")) {	//Positive
+				exacc.addPart(new Positive());
+				continue;
+			}
 
 			//Custome Funktion
 			if (now.contains("type=\"Name\"") && customFunctionListInitialisation && !head) {	//Parameter
