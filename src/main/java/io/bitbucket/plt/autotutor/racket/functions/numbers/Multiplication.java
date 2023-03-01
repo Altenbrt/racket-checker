@@ -1,8 +1,10 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions.numbers;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
 
 import java.util.List;
 
-public class Plus extends Expression{
+public class Multiplication extends Expression {
 
     @Override
     public String evaluate(Expression e) {
@@ -12,17 +14,15 @@ public class Plus extends Expression{
 
     @Override
     public String evaluate(List<Expression> list) {
-        float result = 0;
+        float result = 1;
         for (Expression e : list) {
-            //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //System.out.println(e.evaluate(new Expression()));
-            result += Float.valueOf(e.evaluate(this));
+            result *= Float.valueOf(e.evaluate(this));
         }
         return Float.toString(result);
     }
 
     @Override
     public String toString() {
-        return "Plus" + "(" + super.getId() + ")";
+        return "Multiplication" + "(" + super.getId() + ")";
     }
 }

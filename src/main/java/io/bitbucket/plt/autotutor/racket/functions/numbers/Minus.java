@@ -1,8 +1,10 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions.numbers;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
 
 import java.util.List;
 
-public class Minus extends Expression{
+public class Minus extends Expression {
 
     @Override
     public String evaluate(Expression e) {

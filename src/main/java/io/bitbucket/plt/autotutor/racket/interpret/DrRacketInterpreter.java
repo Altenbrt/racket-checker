@@ -26,6 +26,8 @@ import javax.xml.transform.stream.StreamResult;
 
 import io.bitbucket.plt.autotutor.DrRacketLexer;
 import io.bitbucket.plt.autotutor.DrRacketParser;
+import io.bitbucket.plt.autotutor.racket.functions.CustomFunction;
+import io.bitbucket.plt.autotutor.racket.functions.numbers.*;
 import io.bitbucket.plt.autotutor.racket.test.*;
 import io.bitbucket.plt.autotutor.racket.test.Number;
 import org.antlr.v4.runtime.ANTLRErrorStrategy;

@@ -1,8 +1,10 @@
 package io.bitbucket.plt.autotutor.racket.test;
 
+import io.bitbucket.plt.autotutor.racket.functions.CustomFunction;
+
 import java.util.List;
 
-public class Parameter extends CustomFunction{
+public class Parameter extends CustomFunction {
     String paraName;
     String value;
 
@@ -12,6 +14,10 @@ public class Parameter extends CustomFunction{
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    public String getParaName() {
+        return this.paraName;
     }
 
     @Override

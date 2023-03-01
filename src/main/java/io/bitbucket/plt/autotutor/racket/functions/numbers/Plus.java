@@ -1,8 +1,10 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions.numbers;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
 
 import java.util.List;
 
-public class Division extends Expression{
+public class Plus extends Expression {
 
     @Override
     public String evaluate(Expression e) {
@@ -12,20 +14,17 @@ public class Division extends Expression{
 
     @Override
     public String evaluate(List<Expression> list) {
-        boolean first = true;
         float result = 0;
         for (Expression e : list) {
-            if (first) {
-                result = Float.valueOf(e.evaluate(this));
-                first = false;
-            } else
-                result = result / Float.valueOf(e.evaluate(this));
+            //System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //System.out.println(e.evaluate(new Expression()));
+            result += Float.valueOf(e.evaluate(this));
         }
         return Float.toString(result);
     }
 
     @Override
     public String toString() {
-        return "Division" + "(" + super.getId() + ")";
+        return "Plus" + "(" + super.getId() + ")";
     }
 }

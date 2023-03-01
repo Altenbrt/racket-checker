@@ -1,8 +1,10 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions.numbers;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
 
 import java.util.List;
 
-public class GreaterOrEqualThan extends Expression{
+public class LessThan extends Expression {
 
     @Override
     public String evaluate(Expression e) {
@@ -22,7 +24,7 @@ public class GreaterOrEqualThan extends Expression{
                 continue;
             }
 
-            if (!(value >= valueNow))
+            if (!(value < valueNow))
                 return Boolean.toString(false);
             value = valueNow;
         }
@@ -31,6 +33,7 @@ public class GreaterOrEqualThan extends Expression{
 
     @Override
     public String toString() {
-        return "GreaterThan" + "(" + super.getId() + ")";
+        return "LessThan" + "(" + super.getId() + ")";
     }
+
 }

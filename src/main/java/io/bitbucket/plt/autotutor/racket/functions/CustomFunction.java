@@ -1,9 +1,12 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
+import io.bitbucket.plt.autotutor.racket.test.Parameter;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class CustomFunction extends Expression{
+public class CustomFunction extends Expression {
     private String funName;
     private List<Parameter> parameters;
     private Expression body;
@@ -40,7 +43,7 @@ public class CustomFunction extends Expression{
         for (int i = 0; i < body.getParts().size(); i++) {
             if (body.getParts().get(i).getClass().equals(new Parameter(null).getClass())) {
                 for (Parameter p : parameters) {
-                    if (((Parameter)body.getParts().get(i)).paraName.equals(p.paraName))
+                    if (((Parameter)body.getParts().get(i)).getParaName().equals(p.getParaName()))
                         body.getParts().set(i,p);
                 }
             }

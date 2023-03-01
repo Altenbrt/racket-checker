@@ -1,8 +1,10 @@
-package io.bitbucket.plt.autotutor.racket.test;
+package io.bitbucket.plt.autotutor.racket.functions.numbers;
+
+import io.bitbucket.plt.autotutor.racket.test.Expression;
 
 import java.util.List;
 
-public class Equal extends Expression{
+public class GreaterThan extends Expression {
 
     @Override
     public String evaluate(Expression e) {
@@ -21,8 +23,8 @@ public class Equal extends Expression{
                 first = false;
                 continue;
             }
-            float epsilon = 1 * (float)Math.pow(10, -10); //The accepted deviation vor Float Values here 1*10^-10
-            if (!(Math.abs(value - valueNow) < epsilon))
+
+            if (!(value > valueNow))
                 return Boolean.toString(false);
             value = valueNow;
         }
@@ -31,7 +33,6 @@ public class Equal extends Expression{
 
     @Override
     public String toString() {
-        return "Equal" + "(" + super.getId() + ")";
+        return "GreaterThan" + "(" + super.getId() + ")";
     }
-
 }
