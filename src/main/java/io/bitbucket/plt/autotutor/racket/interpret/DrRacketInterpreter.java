@@ -62,6 +62,7 @@ public class DrRacketInterpreter {
 	//Provisorisch
 	private Expression expression;
 	private List<Expression> expressionList;	//alle expressions, die gegeben wurden
+	private List<CustomFunction> customFunctionList = new LinkedList<>();
 
 	public DrRacketInterpreter(String rktFile) throws Exception {
 
@@ -116,7 +117,7 @@ public class DrRacketInterpreter {
 		exacc = temp;
 
 
-		List<CustomFunction> customFunctionList = new LinkedList<>();
+
 		boolean customFunctionListInitialisation = false;
 		boolean head = false;
 		boolean funName = false;
