@@ -10,15 +10,23 @@ class SyntaxCheckerTest {
 
     @Test
     void bracketCheck() {
-        assertEquals(0, syntaxChecker.bracketCheck(""));
-        assertEquals(0, syntaxChecker.bracketCheck("1"));
-        assertEquals(0, syntaxChecker.bracketCheck("(+ 1 1)"));
-        assertEquals(1, syntaxChecker.bracketCheck("(+ 1 1"));
-        assertEquals(-1, syntaxChecker.bracketCheck("+ 1 1)"));
-        assertEquals(0, syntaxChecker.bracketCheck("(+ 1 (+ 1 1))"));
-        assertEquals(1, syntaxChecker.bracketCheck("(+ 1 (+ 1 1)"));
-        assertEquals(0, syntaxChecker.bracketCheck("\"(+ 1 1)\""));
-        assertEquals(1, syntaxChecker.bracketCheck("(+ 1 \"1)()()()()))))((("));
+        assertEquals(0, syntaxChecker.bracketCheck("")[0]);
+        assertEquals(0, syntaxChecker.bracketCheck("1")[0]);
+        assertEquals(0, syntaxChecker.bracketCheck("(+ 1 (+ 1 1))")[0]);
+        assertEquals(1, syntaxChecker.bracketCheck("(+ 1 (+ 1 1)")[0]);
+        assertEquals(-1, syntaxChecker.bracketCheck("+ 1 (+ 1 1))")[0]);
+        assertEquals(0, syntaxChecker.bracketCheck("\"(+ 1 1)\"")[0]);
+        assertEquals(1, syntaxChecker.bracketCheck("(+ 1 \"1)()()()()))))(((")[0]);
+
+        assertEquals(0, syntaxChecker.bracketCheck("[]")[1]);
+        assertEquals(1, syntaxChecker.bracketCheck("[")[1]);
+        assertEquals(-1, syntaxChecker.bracketCheck("]")[1]);
+        assertEquals(1, syntaxChecker.bracketCheck("[[]")[1]);
+
+        assertEquals(0, syntaxChecker.bracketCheck("([{<>}]) ([>)")[0]);
+        assertEquals(1, syntaxChecker.bracketCheck("([{<>}]) ([>)")[1]);
+        assertEquals(0, syntaxChecker.bracketCheck("([{<>}]) ([>)")[2]);
+        assertEquals(-1, syntaxChecker.bracketCheck("([{<>}]) ([>)")[3]);
     }
 
     @Test
