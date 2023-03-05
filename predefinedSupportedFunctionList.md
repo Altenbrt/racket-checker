@@ -26,21 +26,19 @@ The "" are only for formating purposes and can be ignored
 - negative?
 - odd?
 - positive?
-
-
-# A List of the functions we are planing to Support
-The "" are only for formating purposes and can be ignored
-
-## On Numbers
 - random
 - round
 - sqr
 - sqrt
 - sub1
-## On Booleans
 - zero?
+
+# A List of the functions we are planing to Support
+The "" are only for formating purposes and can be ignored
+
+## On Booleans
 - boolean=?
-- boolean=
+- boolean?
 - false?
 - not
 ## On Lists
