@@ -28,6 +28,7 @@ import io.bitbucket.plt.autotutor.DrRacketLexer;
 import io.bitbucket.plt.autotutor.DrRacketParser;
 import io.bitbucket.plt.autotutor.racket.functions.CustomFunction;
 import io.bitbucket.plt.autotutor.racket.functions.numbers.*;
+import io.bitbucket.plt.autotutor.racket.functions.numbers.Random;
 import io.bitbucket.plt.autotutor.racket.test.*;
 import io.bitbucket.plt.autotutor.racket.test.Number;
 import org.antlr.v4.runtime.ANTLRErrorStrategy;
@@ -234,6 +235,30 @@ public class DrRacketInterpreter {
 			}
 			if (now.contains("type=\"Name\"") && now.contains("value=\"positive?\"")) {	//Positive
 				exacc.addPart(new Positive());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"random\"")) {	//Random
+				exacc.addPart(new Random());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"round\"")) {	//Round
+				exacc.addPart(new Round());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"sqr\"")) {	//Sqr
+				exacc.addPart(new Sqr());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"sqrt\"")) {	//Sqrt
+				exacc.addPart(new Sqrt());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"sub1\"")) {	//Sqrt
+				exacc.addPart(new Sub1());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"zero?\"")) {	//Zero?
+				exacc.addPart(new Zero());
 				continue;
 			}
 
