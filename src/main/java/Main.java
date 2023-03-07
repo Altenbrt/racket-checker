@@ -1,14 +1,15 @@
 import io.bitbucket.plt.autotutor.racket.interpret.DrRacketInterpreter;
 import io.bitbucket.plt.autotutor.racket.test.BracketType;
+import io.bitbucket.plt.autotutor.racket.test.SyntaxChecker;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        for (BracketType bt : BracketType.values()) {
-            System.out.println(bt);
-        }
+        SyntaxChecker syntaxChecker = new SyntaxChecker();
+        System.out.println(syntaxChecker.parameterCheck("(+ 1 1)"));
 
+        /*
         String s = "(/ 9 3)";
         //"(define (double x)\n" +
         //                "(* x 2))\n" +
@@ -25,6 +26,8 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e);
         }
+
+         */
 
 
     }

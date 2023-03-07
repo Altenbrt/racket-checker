@@ -19,6 +19,8 @@ import javax.xml.transform.Source;
 import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamSource;
 
+import io.bitbucket.plt.autotutor.DrRacketLexer;
+import io.bitbucket.plt.autotutor.DrRacketParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.DefaultErrorStrategy;
@@ -29,8 +31,6 @@ import org.xml.sax.InputSource;
 
 import com.github.cliftonlabs.json_simple.JsonException;
 
-import io.bitbucket.plt.autotutor.DrRacketLexer;
-import io.bitbucket.plt.autotutor.DrRacketParser;
 import io.bitbucket.plt.autotutor.racket.ui.AutoTutorGui;
 import net.sf.saxon.Configuration;
 import net.sf.saxon.Version;
