@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import java.io.IOException;
 import java.nio.charset.Charset;
 
+import io.bitbucket.plt.autotutor.DrRacketLexer;
 import io.bitbucket.plt.autotutor.DrRacketParser;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -13,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 
-import io.bitbucket.plt.autotutor.DrRacketLexer;
 import net.sf.saxon.s9api.SaxonApiException;
 
 class ParserTest {

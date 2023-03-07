@@ -322,10 +322,10 @@ public class DrRacketInterpreter {
 		System.out.println(ex);
 		System.out.println("---");
 		expression = ex;
-		System.out.println(ex.evaluate(new Expression()));
+		//System.out.println(ex.evaluate(new Expression())); TODO must be fixed
 		System.out.println("---");
 		expressionList.forEach(x -> System.out.println(x));
-		expressionList.stream().map(x -> x.evaluate(new Expression())).forEach(x -> System.out.println(x));
+		//expressionList.stream().map(x -> x.evaluate(new Expression())).forEach(x -> System.out.println(x)); TODO must be fixed
 
 		System.out.println("CODE ENDE--------------------------");
 
