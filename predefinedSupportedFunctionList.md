@@ -33,14 +33,15 @@ The "" are only for formating purposes and can be ignored
 - sub1
 - zero?
 
-# A List of the functions we are planing to Support
-The "" are only for formating purposes and can be ignored
-
 ## On Booleans
 - boolean=?
 - boolean?
 - false?
 - not
+
+# A List of the functions we are planing to Support
+The "" are only for formating purposes and can be ignored
+
 ## On Lists
 - append
 - cons
