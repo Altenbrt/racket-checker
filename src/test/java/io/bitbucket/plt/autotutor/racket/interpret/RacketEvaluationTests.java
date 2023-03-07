@@ -830,7 +830,7 @@ public class RacketEvaluationTests {
         inter = new DrRacketInterpreter(s);
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
-/*
+
     @Test
     void testBooleanEQ() throws Exception { //"EQ" => "=?"
         String s = "(boolean=? true true)";
@@ -846,6 +846,38 @@ public class RacketEvaluationTests {
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? false false)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #true #true)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(true), inter.evaluateExpressions());
+
+        s = "(boolean=? #true #false)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #false #true)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #false #false)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #t #t)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(true), inter.evaluateExpressions());
+
+        s = "(boolean=? #t #f)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #f #t)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Boolean.toString(false), inter.evaluateExpressions());
+
+        s = "(boolean=? #f #f)";
         inter = new DrRacketInterpreter(s);
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
@@ -939,6 +971,6 @@ public class RacketEvaluationTests {
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
- */
+
 
 }

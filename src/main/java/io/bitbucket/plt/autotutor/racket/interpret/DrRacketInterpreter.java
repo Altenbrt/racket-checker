@@ -27,9 +27,14 @@ import javax.xml.transform.stream.StreamResult;
 import io.bitbucket.plt.autotutor.DrRacketLexer;
 import io.bitbucket.plt.autotutor.DrRacketParser;
 import io.bitbucket.plt.autotutor.racket.functions.CustomFunction;
+import io.bitbucket.plt.autotutor.racket.functions.booleans.BooleanEQ;
+import io.bitbucket.plt.autotutor.racket.functions.booleans.BooleanQ;
+import io.bitbucket.plt.autotutor.racket.functions.booleans.FalseQ;
+import io.bitbucket.plt.autotutor.racket.functions.booleans.Not;
 import io.bitbucket.plt.autotutor.racket.functions.numbers.*;
 import io.bitbucket.plt.autotutor.racket.functions.numbers.Random;
 import io.bitbucket.plt.autotutor.racket.test.*;
+import io.bitbucket.plt.autotutor.racket.test.Boolean;
 import io.bitbucket.plt.autotutor.racket.test.Number;
 import org.antlr.v4.runtime.ANTLRErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
@@ -262,6 +267,22 @@ public class DrRacketInterpreter {
 				exacc.addPart(new Zero());
 				continue;
 			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"boolean=?\"")) {	//Boolean=?
+				exacc.addPart(new BooleanEQ());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"boolean?\"")) {	//Boolean?
+				exacc.addPart(new BooleanQ());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"false?\"")) {	//False?
+				exacc.addPart(new FalseQ());
+				continue;
+			}
+			if (now.contains("type=\"Name\"") && now.contains("value=\"not\"")) {	//Not
+				exacc.addPart(new Not());
+				continue;
+			}
 
 			//Custome Funktion
 			if (now.contains("type=\"Name\"") && customFunctionListInitialisation && !head) {	//Parameter
@@ -305,7 +326,15 @@ public class DrRacketInterpreter {
 			}
 
 
+			if(now.contains("type=\"Boolean\"")) {	//Boolean
+				Pattern pattern = Pattern.compile("\"[^\"]*\"");
+				Matcher matcher = pattern.matcher(now);
 
+				String[] str = matcher.results().map(x -> x.group()).map(x -> x.replaceAll("\"", "")).toArray(String[]::new);
+				//Deswegen 2, weil 0 die line ist ist und 1 der typ
+				exacc.addPart(new Boolean(java.lang.Boolean.valueOf(str[2])));
+
+			}
 
 			if(now.contains("type=\"Number\"")) {	//float
 				Pattern pattern = Pattern.compile("\"[^\"]*\"");
