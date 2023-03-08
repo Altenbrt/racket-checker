@@ -24,8 +24,9 @@ public class SyntaxChecker {
     /** Bisher nur Funktionen mit Number als Parameter */
     String[] knownFunctions = new String[]{"+", "-", "*", "/", "<", "<=", "=", ">", ">=", "abs", "add1", "ceiling", "even?", "exp",
                                         "expt", "floor", "log", "max", "min", "modulo", "negative?", "odd?", "positive?", "random",
-                                        "round", "sqr", "sqrt", "sub1", "zero?",
-                                        "number?"};
+                                        "round", "sqr", "sqrt", "sub1", "zero?"};
+
+    String[] preDefinedVariables = new String[]{"empty", "true", "false"};
     List<String> knownFunctionsList;
 
     /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern
@@ -85,8 +86,7 @@ public class SyntaxChecker {
         parametersOfFunction.put("expt", parameterNumberNumberTwoTwo);
         parametersOfFunction.put("modulo", parameterNumberNumberTwoTwo);
 
-        Object[] parameterBooleanAnyOneOne = {"Boolean", "ANY", 1, 1};
-        parametersOfFunction.put("number?", parameterBooleanAnyOneOne);
+
     }
 
 
@@ -255,6 +255,9 @@ public class SyntaxChecker {
                     switch (type) {
                         case "Name":
                             if (j==0) {
+                                if (value.equals("define")) {
+                                    definitionCheck(children);
+                                }
                                 if (knownFunctionsList.contains(value)) {
                                     functionName = value;
                                     Object[] expectedParameters = parametersOfFunction.get(functionName);
@@ -378,6 +381,38 @@ public class SyntaxChecker {
         }
         return errorMessage;
 
+    }
+
+
+
+    public String expressionCheck(String functionName, NodeList expressionSyntaxNodeList) {
+        String errorMessage = "";
+
+        switch (functionName) {
+            case "cond":
+                //conditionCheck(expressionSyntaxNodeList);
+                break;
+            case "if":
+            case "and":
+            case "or":
+        }
+        for (int i = 1; i < expressionSyntaxNodeList.getLength(); i++) {
+            Element child = (Element) expressionSyntaxNodeList.item(i);
+            String expressionName = child.getAttribute("type");
+            String expressionValue = child.getAttribute("value");
+
+            switch (expressionName) {
+                case "if":
+            }
+        }
+
+        return errorMessage;
+    }
+
+
+
+    public void definitionCheck(NodeList nodeListDefinitionSyntax) {
+        System.out.println("mom gay");
     }
 
     /**

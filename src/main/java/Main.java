@@ -7,7 +7,18 @@ public class Main {
     public static void main(String[] args) {
 
         SyntaxChecker syntaxChecker = new SyntaxChecker();
-        System.out.println(syntaxChecker.parameterCheck("(number? \"string\")"));
+        //System.out.println(syntaxChecker.parameterCheck("(define (smh x y) (+ x y))"));
+
+        try {
+            DrRacketInterpreter inter = new DrRacketInterpreter("(if (string=? (first (first table)) s)\n" +
+                    "              (second (first table))\n" +
+                    "              (lookup (rest table)))");
+            System.out.println(inter.getXml());
+
+
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
 
         /*
