@@ -19,6 +19,9 @@ public class Expression {
      * der die anderen indierrekt abfragt deswegen sollte der erste reichen
      */
     public String evaluate(Expression e) {
+        if (parts.isEmpty()) {
+            return "";
+        }
         String s = "";
         return parts.get(0).evaluate(this);
         //return parts.stream().map(x -> x.evaluate(this)).reduce((x,y) -> x + " , " + y).orElse(" FEHLER ");
