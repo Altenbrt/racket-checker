@@ -24,12 +24,14 @@ public class SyntaxChecker {
     /** Bisher nur Funktionen mit Number als Parameter */
     String[] knownFunctions = new String[]{"+", "-", "*", "/", "<", "<=", "=", ">", ">=", "abs", "add1", "ceiling", "even?", "exp",
                                         "expt", "floor", "log", "max", "min", "modulo", "negative?", "odd?", "positive?", "random",
-                                        "round", "sqr", "sqrt", "sub1", "zero?"};
+                                        "round", "sqr", "sqrt", "sub1", "zero?",
+                                        "number?"};
     List<String> knownFunctionsList;
 
     /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern
      *  Das Array hat die Form {Rückgabetyp, Parametertyp, Mindestanzahl, Maximale Anzahl}
      *  TODO Rückgabewert einer Funktion und Parameterliste mit unterschiedlichen Typen
+     *  Lösung zunächst mit eindimensionalem Array
      */
     HashMap<String, Object[]> parametersOfFunction;
 
@@ -82,6 +84,9 @@ public class SyntaxChecker {
         Object[] parameterNumberNumberTwoTwo = {"Number", "Number", 2, 2};
         parametersOfFunction.put("expt", parameterNumberNumberTwoTwo);
         parametersOfFunction.put("modulo", parameterNumberNumberTwoTwo);
+
+        Object[] parameterBooleanAnyOneOne = {"Boolean", "ANY", 1, 1};
+        parametersOfFunction.put("number?", parameterBooleanAnyOneOne);
     }
 
 
@@ -229,79 +234,143 @@ public class SyntaxChecker {
 
             Element root = document.getDocumentElement();
 
-            NodeList nodeList = root.getChildNodes();
-            nodeList = removeEmptyText(nodeList);
-            for (int i=0; i<nodeList.getLength(); i++) {
-                Node n = nodeList.item(i);
-                NodeList children = n.getChildNodes();
+            NodeList initialNodeList = root.getChildNodes();
+            initialNodeList = removeEmptyText(initialNodeList);
+            for (int i=0; i<initialNodeList.getLength(); i++) {
+                Node initial = initialNodeList.item(i);
+                NodeList children = initial.getChildNodes();
                 children = removeEmptyText(children);
 
                 String functionName = "";
-                String parameterType = "";
-                int minParameters = 0;
-                int maxParameters = 0;
-                int parametersFound = 0;
+                // Jedes Objekt-Array hat folgende Struktur: {Typ, min, max}
+                ArrayList<Object[]> parameterExpected = new ArrayList<>();
+                // Jedes Objekt-Array hat folgende Struktur: {Typ, count}
+                ArrayList<Object[]> parameterGiven = new ArrayList<>();
+                Object[] givenTypeMinMax = new Object[]{"", 0};
                 for (int j=0; j<children.getLength(); j++) {
+
                     Element child = (Element) children.item(j);
-                    switch (child.getAttribute("type")) {
+                    String type = child.getAttribute("type");
+                    String value = child.getAttribute("value");
+                    switch (type) {
                         case "Name":
                             if (j==0) {
-                                if (knownFunctionsList.contains(child.getAttribute("value"))) {
-                                    functionName = child.getAttribute("value");
+                                if (knownFunctionsList.contains(value)) {
+                                    functionName = value;
                                     Object[] expectedParameters = parametersOfFunction.get(functionName);
-                                    parameterType = (String) expectedParameters[1];
-                                    minParameters = (int) expectedParameters[2];
-                                    maxParameters = (int) expectedParameters[3];
+
+                                    Object[] paraMinMax = new Object[3];
+                                    for (int k=1; k<expectedParameters.length; k++) {
+                                        if ((k-1)%3==0) {
+                                            paraMinMax[0] = expectedParameters[k];
+                                        } else if ((k-1)%3==1) {
+                                            paraMinMax[1] = expectedParameters[k];
+                                        } else {
+                                            paraMinMax[2] = expectedParameters[k];
+                                            parameterExpected.add(paraMinMax);
+                                            paraMinMax = new Object[3];
+                                        }
+                                    }
                                 } else {
-                                    return "Function is not defined: " + child.getAttribute("value");
+                                    return child.getAttribute("value") + ": this function is not defined";
                                 }
                             }
                             break;
                         case "Number":
                         case "HashName":
-                            if (parameterType.equals("Number")) {
-                                parametersFound++;
-                            } else if (parameterType.equals("HashName")) {
-                                parametersFound++;
-                            } else {
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
+                            int index = -1;
+                            boolean matchFound = false;
+                            for (Object[] array : parameterExpected){
+                                index++;
+                                if (array[0].equals("Number") || array[0].equals("HashName")) {
+                                    givenTypeMinMax[0] = array[0];
+                                    int count = (int) givenTypeMinMax[1];
+                                    givenTypeMinMax[1] = count + 1;
+                                    parameterGiven.add(givenTypeMinMax);
+                                    matchFound = true;
+                                    break;
+                                }
                             }
-                            break;
+                            if (matchFound) break;
+                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
                         case "String":
-                            if (parameterType.equals("String")) {
-                                parametersFound++;
-                            } else {
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
+                            index = -1;
+                            matchFound = false;
+                            for (Object[] array : parameterExpected) {
+                                index++;
+                                System.out.println(array[0]);
+                                if (array[0].equals("String")) {
+                                    givenTypeMinMax[0] = array[0];
+                                    int count = (int) givenTypeMinMax[1];
+                                    givenTypeMinMax[1] = count + 1;
+                                    parameterGiven.add(givenTypeMinMax);
+                                    matchFound = true;
+                                    break;
+                                }
                             }
-                            break;
+                            if (matchFound) break;
+                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
                         case "Boolean":
-                            if (parameterType.equals("Boolean")) {
-                                parametersFound++;
-                            } else {
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
+                            index = -1;
+                            matchFound = false;
+                            for (Object[] array : parameterExpected) {
+                                index++;
+                                if (array[0].equals("Boolean")) {
+                                    givenTypeMinMax[0] = array[0];
+                                    int count = (int) givenTypeMinMax[1];
+                                    givenTypeMinMax[1] = count + 1;
+                                    parameterGiven.add(givenTypeMinMax);
+                                    matchFound = true;
+                                    break;
+                                }
                             }
-                            break;
+                            if (matchFound) break;
+                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
                         case "round":
                             NodeList nestedFunction = child.getChildNodes();
                             nestedFunction = removeEmptyText(nestedFunction);
                             Element nestedFunctionElement = (Element) nestedFunction.item(0);
                             String nestedFunctionName = nestedFunctionElement.getAttribute("value");
                             Object[] nestedFunctionParameters = parametersOfFunction.get(nestedFunctionName);
-                            if (parameterType.equals(nestedFunctionParameters[0])) {
-                                parametersFound++;
-                            } else {
-                                return functionName + ": expects a " + parameterType + ", given " + nestedFunctionParameters[0];
+
+                            index = -1;
+                            matchFound = false;
+                            for (Object[] array : parameterExpected) {
+                                index++;
+                                if (array[0].equals(nestedFunctionParameters[0])) {
+                                    givenTypeMinMax[0] = array[0];
+                                    int count = (int) givenTypeMinMax[1];
+                                    givenTypeMinMax[1] = count + 1;
+                                    parameterGiven.add(givenTypeMinMax);
+                                    matchFound = true;
+                                    break;
+                                }
                             }
+                            if (matchFound) break;
+                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + nestedFunctionParameters[0];
                     }
-                    System.out.println(child.getAttribute("type"));
                 }
 
-                if (! (parametersFound >= minParameters)) {
-                    return functionName + ": expects " + minParameters + " argument, but found " + parametersFound;
+                for (int a=0; a<parameterExpected.size(); a++) {
+
+                    if (parameterGiven.isEmpty()) {
+                        if ((int) parameterExpected.get(a)[1] > 0) {
+                            return functionName + ": expects " + parameterExpected.get(a)[1] + " argument, but found 0";
+                        }
+                    } else {
+                        String expectedType = (String) parameterExpected.get(a)[0];
+                        String givenType = (String) parameterGiven.get(a)[0];
+                        if (expectedType.equals(givenType)) {
+                            if ((int) parameterExpected.get(a)[1] > (int) parameterGiven.get(a)[1]) {
+                                return functionName + ": expects " + parameterExpected.get(a)[1] + " argument, but found " + parameterGiven.get(a)[1];
+                            } else if ((int) parameterExpected.get(a)[2] < (int) parameterGiven.get(a)[1]) {
+                                return functionName + ": expects " + parameterExpected.get(a)[2] + " argument, but found " + parameterGiven.get(a)[1];
+                            }
+                        }
+                    }
                 }
-                else if (! (parametersFound <= maxParameters)) {
-                    return functionName + ": expects " + maxParameters + " argument, but found " + parametersFound;
-                }
+
+                givenTypeMinMax = new Object[]{"", 0};
             }
 
         } catch (Exception e) {

@@ -7,7 +7,8 @@ public class Main {
     public static void main(String[] args) {
 
         SyntaxChecker syntaxChecker = new SyntaxChecker();
-        System.out.println(syntaxChecker.parameterCheck("(+ 1 1)"));
+        System.out.println(syntaxChecker.parameterCheck("(number? \"string\")"));
+
 
         /*
         String s = "(/ 9 3)";

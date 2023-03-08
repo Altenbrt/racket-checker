@@ -41,7 +41,7 @@ class SyntaxCheckerTest {
     void parameterCheck() {
         assertEquals("", syntaxChecker.parameterCheck(""));
         assertEquals("", syntaxChecker.parameterCheck("(+ 1 1)"));
-        assertEquals("Function is not defined: UndefinedFunction",
+        assertEquals("UndefinedFunction: this function is not defined",
                 syntaxChecker.parameterCheck("(UndefinedFunction 1 1)"));
 
         assertEquals("+: expects a Number, given \"Not a Number\"", syntaxChecker.parameterCheck("(+ \"Not a Number\" 1"));
