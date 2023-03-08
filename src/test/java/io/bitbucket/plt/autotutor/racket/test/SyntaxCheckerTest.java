@@ -53,5 +53,8 @@ class SyntaxCheckerTest {
 
         assertEquals("expt: expects 2 argument, but found 1", syntaxChecker.parameterCheck("(expt 1)"));
         assertEquals("expt: expects 2 argument, but found 3", syntaxChecker.parameterCheck("(expt 1 1 1)"));
+
+        assertEquals("", syntaxChecker.parameterCheck("(+ 1 (+ 1 1))"));
+        assertEquals("+: expects a Number, given Boolean", syntaxChecker.parameterCheck("(+ 1 (< 1 1))"));
     }
 }

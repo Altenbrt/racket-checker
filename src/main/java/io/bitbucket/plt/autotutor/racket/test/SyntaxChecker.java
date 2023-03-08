@@ -20,51 +20,68 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SyntaxChecker {
-    ArrayList<String> tokens;
+
+    /** Bisher nur Funktionen mit Number als Parameter */
     String[] knownFunctions = new String[]{"+", "-", "*", "/", "<", "<=", "=", ">", ">=", "abs", "add1", "ceiling", "even?", "exp",
                                         "expt", "floor", "log", "max", "min", "modulo", "negative?", "odd?", "positive?", "random",
                                         "round", "sqr", "sqrt", "sub1", "zero?"};
     List<String> knownFunctionsList;
+
+    /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern
+     *  Das Array hat die Form {Rückgabetyp, Parametertyp, Mindestanzahl, Maximale Anzahl}
+     *  TODO Rückgabewert einer Funktion und Parameterliste mit unterschiedlichen Typen
+     */
     HashMap<String, Object[]> parametersOfFunction;
 
+    /**
+     * Creates the Parameter-Arrays for every Function and assigns them to the function name
+     */
     public SyntaxChecker() {
         knownFunctionsList = Arrays.asList(knownFunctions);
-        Object[] parameterNumberTwoTillInfinite = {"Number", 2, Integer.MAX_VALUE};
         parametersOfFunction = new HashMap<>();
-        parametersOfFunction.put("+", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("-", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("*", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("/", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("<", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("<=", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put(">", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put(">=", parameterNumberTwoTillInfinite);
 
-        Object[] parameterNumberOneTillInfinite = {"Number", 1, Integer.MAX_VALUE};
-        parametersOfFunction.put("max", parameterNumberOneTillInfinite);
-        parametersOfFunction.put("min", parameterNumberOneTillInfinite);
+        Object[] parameterNumberNumberTwoInfinite = {"Number", "Number", 2, Integer.MAX_VALUE};
+        parametersOfFunction.put("+", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("-", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("*", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("/", parameterNumberNumberTwoInfinite);
 
-        Object[] parameterNumberOneTillOne = {"Number", 1, 1};
-        parametersOfFunction.put("abs", parameterNumberOneTillOne);
-        parametersOfFunction.put("add1", parameterNumberOneTillOne);
-        parametersOfFunction.put("ceiling", parameterNumberOneTillOne);
-        parametersOfFunction.put("even?", parameterNumberOneTillOne);
-        parametersOfFunction.put("odd?", parameterNumberOneTillOne);
-        parametersOfFunction.put("exp", parameterNumberOneTillOne);
-        parametersOfFunction.put("floor", parameterNumberOneTillOne);
-        parametersOfFunction.put("log", parameterNumberOneTillOne);
-        parametersOfFunction.put("negative?", parameterNumberOneTillOne);
-        parametersOfFunction.put("positive?", parameterNumberOneTillOne);
-        parametersOfFunction.put("random", parameterNumberOneTillOne);
-        parametersOfFunction.put("round", parameterNumberOneTillOne);
-        parametersOfFunction.put("sqr", parameterNumberOneTillOne);
-        parametersOfFunction.put("sqrt", parameterNumberOneTillOne);
-        parametersOfFunction.put("sub1", parameterNumberOneTillOne);
-        parametersOfFunction.put("zero?", parameterNumberOneTillOne);
+        Object[] parameterBooleanNumberTwoInfinite = {"Boolean", "Number", 2, Integer.MAX_VALUE};
+        parametersOfFunction.put("<", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put("<=", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put(">", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put(">=", parameterBooleanNumberTwoInfinite);
 
-        Object[] parameterNumberTwoTillTwo = {"Number", 2, 2};
-        parametersOfFunction.put("expt", parameterNumberTwoTillTwo);
-        parametersOfFunction.put("modulo", parameterNumberTwoTillTwo);
+        Object[] parameterNumberumberOneInfinite = {"Number", "Number", 1, Integer.MAX_VALUE};
+        parametersOfFunction.put("max", parameterNumberumberOneInfinite);
+        parametersOfFunction.put("min", parameterNumberumberOneInfinite);
+
+        Object[] parameterNumberNumberOneOne = {"Number", "Number", 1, 1};
+        parametersOfFunction.put("abs", parameterNumberNumberOneOne);
+        parametersOfFunction.put("add1", parameterNumberNumberOneOne);
+        parametersOfFunction.put("ceiling", parameterNumberNumberOneOne);
+        parametersOfFunction.put("floor", parameterNumberNumberOneOne);
+        parametersOfFunction.put("random", parameterNumberNumberOneOne);
+        parametersOfFunction.put("round", parameterNumberNumberOneOne);
+        parametersOfFunction.put("sqr", parameterNumberNumberOneOne);
+        parametersOfFunction.put("sqrt", parameterNumberNumberOneOne);
+        parametersOfFunction.put("sub1", parameterNumberNumberOneOne);
+
+        Object[] parameterBooleanNumberOneOne = {"Boolean", "Number", 1, 1};
+        parametersOfFunction.put("even?", parameterBooleanNumberOneOne);
+        parametersOfFunction.put("odd?", parameterBooleanNumberOneOne);
+        parametersOfFunction.put("negative?", parameterBooleanNumberOneOne);
+        parametersOfFunction.put("positive?", parameterBooleanNumberOneOne);
+        parametersOfFunction.put("zero?", parameterBooleanNumberOneOne);
+
+        Object[] parameterHashnameNumberOneOne = {"HashName", "Number", 1, 1};
+        parametersOfFunction.put("exp", parameterHashnameNumberOneOne);
+        parametersOfFunction.put("log", parameterHashnameNumberOneOne);
+
+
+        Object[] parameterNumberNumberTwoTwo = {"Number", "Number", 2, 2};
+        parametersOfFunction.put("expt", parameterNumberNumberTwoTwo);
+        parametersOfFunction.put("modulo", parameterNumberNumberTwoTwo);
     }
 
 
@@ -73,28 +90,14 @@ public class SyntaxChecker {
 
     }
 
-    public void tokenizeString(String rktString) {
-        String[] lines = rktString.trim().split("\n");
-        ArrayList<String> tempTokens = new ArrayList<>();
-        for (int i = 0; i< lines.length; i++) {
-            tempTokens.addAll(Arrays.asList(lines[i].split("\\s+")));
-        }
-
-        tokens = new ArrayList<>();
-        ArrayList<String> tempTokens2 = new ArrayList<>();
-        for (int i = 0; i < tempTokens.size(); i++) {
-            tempTokens2.addAll(Arrays.asList(tempTokens.get(i).split("(?<=\\()")));
-        }
-
-        for (int i = 0; i < tempTokens2.size(); i++) {
-            tokens.addAll(Arrays.asList(tempTokens2.get(i).split("(?=\\))")));
-        }
-        for (int i = 0; i< tokens.size(); i++) {
-            System.out.println(tokens.get(i));
-        }
-    }
-
-
+    /**
+     * Counts the brackets in a String.
+     * Opening bracket found means + 1, closing bracket found means - 1.
+     * Supports Round, Square, Curly and Angle brackets.
+     * @param rktString The String to be checked
+     * @return          An Integer Array with counts for every bracket type
+     *                  {Round, Square, Curly, Angle}
+     */
     public int[] bracketCheck(String rktString) {
         int[] count = new int[4];
         int countIndex = 0;
@@ -181,6 +184,13 @@ public class SyntaxChecker {
         return count;
     }
 
+    /**
+     * Assist bracketCheck. If there is an odd number of quotation marks
+     * in a given String, returns true
+     * @param s The String to be checked
+     * @return  If there are an even number of quotation marks, returns false
+     *          If there are an odd number of quotations marks, returns true
+     */
     public boolean countQuotationsMarks(String s) {
         int count = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -195,23 +205,18 @@ public class SyntaxChecker {
         }
     }
 
-
-    public boolean functionNameKnown(String functionName) {
-        if (knownFunctionsList.contains(functionName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void functionsDefined () {}
-
     public void objectsDefined () {}
 
     public void nullTeiler() {}
 
+    /**
+     * Checks if a found function name is already defined.
+     * If true, checks over the given parameters of that function wether they fit the expected parameters of that function or not.
+     * @param rktString String to be checked
+     * @return          A message containing information about the function name and wrong parameters,
+     *                  of the first function found, that does not fulfill the expected criteria
+     */
     public String parameterCheck(String rktString) {
-        // TODO hat eingabe den richtigen typen?
         String errorMessage = "";
 
         try {
@@ -244,20 +249,21 @@ public class SyntaxChecker {
                                 if (knownFunctionsList.contains(child.getAttribute("value"))) {
                                     functionName = child.getAttribute("value");
                                     Object[] expectedParameters = parametersOfFunction.get(functionName);
-                                    parameterType = (String) expectedParameters[0];
-                                    minParameters = (int) expectedParameters[1];
-                                    maxParameters = (int) expectedParameters[2];
+                                    parameterType = (String) expectedParameters[1];
+                                    minParameters = (int) expectedParameters[2];
+                                    maxParameters = (int) expectedParameters[3];
                                 } else {
-                                    // TODO How the found Error is handled
                                     return "Function is not defined: " + child.getAttribute("value");
                                 }
                             }
                             break;
                         case "Number":
+                        case "HashName":
                             if (parameterType.equals("Number")) {
                                 parametersFound++;
+                            } else if (parameterType.equals("HashName")) {
+                                parametersFound++;
                             } else {
-                                // TODO How the found Error is handled
                                 return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
                             }
                             break;
@@ -265,7 +271,6 @@ public class SyntaxChecker {
                             if (parameterType.equals("String")) {
                                 parametersFound++;
                             } else {
-                                // TODO How the found Error is handled
                                 return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
                             }
                             break;
@@ -273,10 +278,20 @@ public class SyntaxChecker {
                             if (parameterType.equals("Boolean")) {
                                 parametersFound++;
                             } else {
-                                // TODO How the found Error is handled
                                 return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
                             }
                             break;
+                        case "round":
+                            NodeList nestedFunction = child.getChildNodes();
+                            nestedFunction = removeEmptyText(nestedFunction);
+                            Element nestedFunctionElement = (Element) nestedFunction.item(0);
+                            String nestedFunctionName = nestedFunctionElement.getAttribute("value");
+                            Object[] nestedFunctionParameters = parametersOfFunction.get(nestedFunctionName);
+                            if (parameterType.equals(nestedFunctionParameters[0])) {
+                                parametersFound++;
+                            } else {
+                                return functionName + ": expects a " + parameterType + ", given " + nestedFunctionParameters[0];
+                            }
                     }
                     System.out.println(child.getAttribute("type"));
                 }
@@ -289,7 +304,6 @@ public class SyntaxChecker {
                 }
             }
 
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -297,6 +311,9 @@ public class SyntaxChecker {
 
     }
 
+    /**
+     * Removes #Text elements in a NodeList
+     */
     public NodeList removeEmptyText(NodeList nodeList) {
         for (int i=0; i<nodeList.getLength(); i++) {
             Node n = nodeList.item(i);
