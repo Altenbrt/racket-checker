@@ -20,81 +20,91 @@ import java.util.HashMap;
 import java.util.List;
 
 public class SyntaxChecker {
-    ArrayList<String> tokens;
+
+    /** Bisher nur Funktionen mit Number als Parameter */
     String[] knownFunctions = new String[]{"+", "-", "*", "/", "<", "<=", "=", ">", ">=", "abs", "add1", "ceiling", "even?", "exp",
                                         "expt", "floor", "log", "max", "min", "modulo", "negative?", "odd?", "positive?", "random",
                                         "round", "sqr", "sqrt", "sub1", "zero?"};
+
+    /** Alle definierten Variabeln, sowohl vordefiniert, als auch selber definierte */
+    String[] knownVariables = new String[]{"empty", "true", "false"};
     List<String> knownFunctionsList;
+    List<String> knownVariablesList;
+
+    /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern und dem Rückgabetyp.
+     *  Das Array hat die Form {Rückgabetyp, Parametertyp_1, ..., Parametertyp_n, (INFINITE)}.
+     *  INFINITE nur dann, wenn der vorherige Parametertyp unendlich oft vorkommen kann.
+     */
     HashMap<String, Object[]> parametersOfFunction;
 
+    /**
+     * Creates the Parameter-Arrays for every Function and assigns them to the function name
+     */
     public SyntaxChecker() {
         knownFunctionsList = Arrays.asList(knownFunctions);
-        Object[] parameterNumberTwoTillInfinite = {"Number", 2, Integer.MAX_VALUE};
+        knownVariablesList = Arrays.asList(knownVariables);
         parametersOfFunction = new HashMap<>();
-        parametersOfFunction.put("+", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("-", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("*", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("/", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("<", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put("<=", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put(">", parameterNumberTwoTillInfinite);
-        parametersOfFunction.put(">=", parameterNumberTwoTillInfinite);
 
-        Object[] parameterNumberOneTillInfinite = {"Number", 1, Integer.MAX_VALUE};
-        parametersOfFunction.put("max", parameterNumberOneTillInfinite);
-        parametersOfFunction.put("min", parameterNumberOneTillInfinite);
+        Object[] parameterNumberNumberTwoInfinite = {"Number", "Number", "Number", "INFINITE"};
+        parametersOfFunction.put("+", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("-", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("*", parameterNumberNumberTwoInfinite);
+        parametersOfFunction.put("/", parameterNumberNumberTwoInfinite);
 
-        Object[] parameterNumberOneTillOne = {"Number", 1, 1};
-        parametersOfFunction.put("abs", parameterNumberOneTillOne);
-        parametersOfFunction.put("add1", parameterNumberOneTillOne);
-        parametersOfFunction.put("ceiling", parameterNumberOneTillOne);
-        parametersOfFunction.put("even?", parameterNumberOneTillOne);
-        parametersOfFunction.put("odd?", parameterNumberOneTillOne);
-        parametersOfFunction.put("exp", parameterNumberOneTillOne);
-        parametersOfFunction.put("floor", parameterNumberOneTillOne);
-        parametersOfFunction.put("log", parameterNumberOneTillOne);
-        parametersOfFunction.put("negative?", parameterNumberOneTillOne);
-        parametersOfFunction.put("positive?", parameterNumberOneTillOne);
-        parametersOfFunction.put("random", parameterNumberOneTillOne);
-        parametersOfFunction.put("round", parameterNumberOneTillOne);
-        parametersOfFunction.put("sqr", parameterNumberOneTillOne);
-        parametersOfFunction.put("sqrt", parameterNumberOneTillOne);
-        parametersOfFunction.put("sub1", parameterNumberOneTillOne);
-        parametersOfFunction.put("zero?", parameterNumberOneTillOne);
+        Object[] parameterBooleanNumberTwoInfinite = {"Boolean", "Number", "Number", "INFINITE"};
+        parametersOfFunction.put("<", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put("<=", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put(">", parameterBooleanNumberTwoInfinite);
+        parametersOfFunction.put(">=", parameterBooleanNumberTwoInfinite);
 
-        Object[] parameterNumberTwoTillTwo = {"Number", 2, 2};
-        parametersOfFunction.put("expt", parameterNumberTwoTillTwo);
-        parametersOfFunction.put("modulo", parameterNumberTwoTillTwo);
+        Object[] parameterNumberumberOneInfinite = {"Number", "Number", "INFINITE"};
+        parametersOfFunction.put("max", parameterNumberumberOneInfinite);
+        parametersOfFunction.put("min", parameterNumberumberOneInfinite);
+
+        Object[] parameterNumberNumber = {"Number", "Number"};
+        parametersOfFunction.put("abs", parameterNumberNumber);
+        parametersOfFunction.put("add1", parameterNumberNumber);
+        parametersOfFunction.put("ceiling", parameterNumberNumber);
+        parametersOfFunction.put("floor", parameterNumberNumber);
+        parametersOfFunction.put("random", parameterNumberNumber);
+        parametersOfFunction.put("round", parameterNumberNumber);
+        parametersOfFunction.put("sqr", parameterNumberNumber);
+        parametersOfFunction.put("sqrt", parameterNumberNumber);
+        parametersOfFunction.put("sub1", parameterNumberNumber);
+
+        Object[] parameterBooleanNumber = {"Boolean", "Number"};
+        parametersOfFunction.put("even?", parameterBooleanNumber);
+        parametersOfFunction.put("odd?", parameterBooleanNumber);
+        parametersOfFunction.put("negative?", parameterBooleanNumber);
+        parametersOfFunction.put("positive?", parameterBooleanNumber);
+        parametersOfFunction.put("zero?", parameterBooleanNumber);
+
+        Object[] parameterHashnameNumber = {"HashName", "Number"};
+        parametersOfFunction.put("exp", parameterHashnameNumber);
+        parametersOfFunction.put("log", parameterHashnameNumber);
+
+
+        Object[] parameterNumberNumberNumber = {"Number", "Number", "Number"};
+        parametersOfFunction.put("expt", parameterNumberNumberNumber);
+        parametersOfFunction.put("modulo", parameterNumberNumberNumber);
+
+
     }
 
 
     public void check(String rktString) {
         int[] brackets = bracketCheck(rktString);
-
+        String errorMessage = syntaxCheck(rktString);
     }
 
-    public void tokenizeString(String rktString) {
-        String[] lines = rktString.trim().split("\n");
-        ArrayList<String> tempTokens = new ArrayList<>();
-        for (int i = 0; i< lines.length; i++) {
-            tempTokens.addAll(Arrays.asList(lines[i].split("\\s+")));
-        }
-
-        tokens = new ArrayList<>();
-        ArrayList<String> tempTokens2 = new ArrayList<>();
-        for (int i = 0; i < tempTokens.size(); i++) {
-            tempTokens2.addAll(Arrays.asList(tempTokens.get(i).split("(?<=\\()")));
-        }
-
-        for (int i = 0; i < tempTokens2.size(); i++) {
-            tokens.addAll(Arrays.asList(tempTokens2.get(i).split("(?=\\))")));
-        }
-        for (int i = 0; i< tokens.size(); i++) {
-            System.out.println(tokens.get(i));
-        }
-    }
-
-
+    /**
+     * Counts the brackets in a String.
+     * Opening bracket found means + 1, closing bracket found means - 1.
+     * Supports Round, Square, Curly and Angle brackets.
+     * @param rktString The String to be checked
+     * @return          An Integer Array with counts for every bracket type
+     *                  {Round, Square, Curly, Angle}
+     */
     public int[] bracketCheck(String rktString) {
         int[] count = new int[4];
         int countIndex = 0;
@@ -181,6 +191,13 @@ public class SyntaxChecker {
         return count;
     }
 
+    /**
+     * Assist bracketCheck. If there is an odd number of quotation marks
+     * in a given String, returns true
+     * @param s The String to be checked
+     * @return  If there are an even number of quotation marks, returns false
+     *          If there are an odd number of quotations marks, returns true
+     */
     public boolean countQuotationsMarks(String s) {
         int count = 0;
         for (int i = 0; i < s.length(); i++) {
@@ -195,108 +212,239 @@ public class SyntaxChecker {
         }
     }
 
-
-    public boolean functionNameKnown(String functionName) {
-        if (knownFunctionsList.contains(functionName)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public void functionsDefined () {}
-
     public void objectsDefined () {}
 
     public void nullTeiler() {}
 
-    public String parameterCheck(String rktString) {
-        // TODO hat eingabe den richtigen typen?
-        String errorMessage = "";
 
+    /**
+     * Makes XML-String from the given Racket-String
+     * and divides the given Racket-Syntax into Expressions or Definitions
+     * and checks them seperatly
+     * @param rktString A String with Racket-Syntax
+     * @return          A String containing an error-message, if there is a syntax-error in rktString
+     */
+    public String syntaxCheck(String rktString) {
+        String errorMessage = "";
         try {
-            DrRacketInterpreter inter = new DrRacketInterpreter(rktString);
-            System.out.println(inter.getXml());
+            DrRacketInterpreter interpreter = new DrRacketInterpreter(rktString);
+            System.out.println(interpreter.getXml());
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new InputSource(new StringReader(inter.getXml())));
+            Document document = builder.parse(new InputSource(new StringReader(interpreter.getXml())));
 
             Element root = document.getDocumentElement();
 
-            NodeList nodeList = root.getChildNodes();
-            nodeList = removeEmptyText(nodeList);
-            for (int i=0; i<nodeList.getLength(); i++) {
-                Node n = nodeList.item(i);
-                NodeList children = n.getChildNodes();
-                children = removeEmptyText(children);
+            NodeList rootChildren = root.getChildNodes();
+            rootChildren = removeEmptyText(rootChildren);
+            for (int childrenOfRootCount = 0; childrenOfRootCount < rootChildren.getLength(); childrenOfRootCount++) {
+                Element defOrExpr = (Element) rootChildren.item(childrenOfRootCount);
+                errorMessage = defAndExprCheck(defOrExpr);
 
-                String functionName = "";
-                String parameterType = "";
-                int minParameters = 0;
-                int maxParameters = 0;
-                int parametersFound = 0;
-                for (int j=0; j<children.getLength(); j++) {
-                    Element child = (Element) children.item(j);
-                    switch (child.getAttribute("type")) {
-                        case "Name":
-                            if (j==0) {
-                                if (knownFunctionsList.contains(child.getAttribute("value"))) {
-                                    functionName = child.getAttribute("value");
-                                    Object[] expectedParameters = parametersOfFunction.get(functionName);
-                                    parameterType = (String) expectedParameters[0];
-                                    minParameters = (int) expectedParameters[1];
-                                    maxParameters = (int) expectedParameters[2];
-                                } else {
-                                    // TODO How the found Error is handled
-                                    return "Function is not defined: " + child.getAttribute("value");
-                                }
-                            }
-                            break;
-                        case "Number":
-                            if (parameterType.equals("Number")) {
-                                parametersFound++;
-                            } else {
-                                // TODO How the found Error is handled
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
-                            }
-                            break;
-                        case "String":
-                            if (parameterType.equals("String")) {
-                                parametersFound++;
-                            } else {
-                                // TODO How the found Error is handled
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
-                            }
-                            break;
-                        case "Boolean":
-                            if (parameterType.equals("Boolean")) {
-                                parametersFound++;
-                            } else {
-                                // TODO How the found Error is handled
-                                return functionName + ": expects a " + parameterType + ", given " + child.getAttribute("value");
-                            }
-                            break;
-                    }
-                    System.out.println(child.getAttribute("type"));
-                }
-
-                if (! (parametersFound >= minParameters)) {
-                    return functionName + ": expects " + minParameters + " argument, but found " + parametersFound;
-                }
-                else if (! (parametersFound <= maxParameters)) {
-                    return functionName + ": expects " + maxParameters + " argument, but found " + parametersFound;
-                }
+                if (! errorMessage.isEmpty()) break;
             }
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return errorMessage;
-
     }
 
+    /**
+     * Decides wether a given Element marks the start of a Definition or an Expression.
+     * Checks them each a different way.
+     * @param defOrExpr An Element containing either an opening-Bracket or an Expression
+     * @return          A String containing an error-message, if there is a syntax-error the given Definition or Expression (without Brackets).
+     */
+    public String defAndExprCheck(Element defOrExpr) {
+        String errorMessage = "";
+
+        String typeDefOrExpr = defOrExpr.getAttribute("type");
+        switch (typeDefOrExpr) {
+            case "round":
+                NodeList childrenOfDefOrExpr = defOrExpr.getChildNodes();
+                childrenOfDefOrExpr = removeEmptyText(childrenOfDefOrExpr);
+                Element firstElement = (Element) childrenOfDefOrExpr.item(0);
+                String typeFirstElement = firstElement.getAttribute("type");
+                switch (typeFirstElement) {
+                    case "define":
+                    case "define-struct":
+                        return definitionCheck(defOrExpr);
+                    case "Name":
+                        return expressionCheck(defOrExpr);
+                    default:
+                        return "function call: expected a function after the open parenthesis";
+                }
+            case "Name":
+                return expressionCheck(defOrExpr);
+            case "Number":
+            case "HashName":
+            case "String":
+            case "Boolean":
+                return "";
+            default:
+                return "something unexpected happened";
+        }
+    }
+
+    /**
+     * Decides wether the given Expression is a Function, Condition, if-statement, and-statement, or or-statement.
+     * Checks most of them in a seperate way.
+     * @param expression An Element containing an opening-Bracket, that marks the start of an Expression.
+     * @return          A String containing an error-message, if there is a syntax-error the given Expression
+     */
+    public String expressionCheck(Element expression) {
+        String errorMessage = "";
+
+        String expressionValue = expression.getAttribute("value");
+        if (! expressionValue.isEmpty() && knownFunctionsList.contains(expressionValue)) {
+            return expressionValue + ": expects a function call, but there is no open paranthesis before this function";
+        }
+        if (! expressionValue.isEmpty() && ! knownVariablesList.contains(expressionValue)) {
+            return expressionValue + ": this variable is not defined";
+        }
+
+        NodeList expressionChildren = expression.getChildNodes();
+        expressionChildren = removeEmptyText(expressionChildren);
+        Element expressionFirstChild = (Element) expressionChildren.item(0);
+        String functionName = expressionFirstChild.getAttribute("value");
+        switch (functionName) {
+            case "cond":
+                errorMessage = conditionCheck(expression);
+                break;
+            case "if":
+                errorMessage = ifStatementCheck(expression);
+                break;
+            case "and":
+                errorMessage = andStatementCheck(expression);
+                break;
+            case "or":
+                errorMessage = orStatementCheck(expression);
+                break;
+            default:
+                if (knownFunctionsList.contains(functionName)) {
+                    errorMessage = functionCheck(expression);
+                    break;
+                }
+                return functionName + ": this function is not defined";
+        }
+
+        return errorMessage;
+    }
+
+    public String conditionCheck(Element condition) {
+        return null;
+    }
+
+    public String ifStatementCheck(Element ifStatement) {
+        return null;
+    }
+
+    public String andStatementCheck(Element andStatement) {
+        return null;
+    }
+
+    public String orStatementCheck(Element orStatement) {
+        return null;
+    }
+
+    /**
+     * Checks the given Function for syntax-errors.
+     * @param function An Element containing an opening-Bracket, that marks the start of a Function.
+     * @return          A String containing an error-message, if there is a syntax-error the given Function
+     */
+    public String functionCheck(Element function) {
+        String errorMessage = "";
+        int caseInfiniteIndex = -1;
+
+        NodeList functionChildren = function.getChildNodes();
+        Element functionFirstChild = (Element) functionChildren.item(0);
+        String functionName = functionFirstChild.getAttribute("value");
+        NodeList functionParameter = removeEmptyText(functionChildren);
+
+        // A few pre-defined-functions can hold an infinite amount of arguments/attributes/parameters.
+        if (parametersOfFunction.get(functionName)[parametersOfFunction.get(functionName).length - 1].equals("INFINITE")) {
+            if (parametersOfFunction.get(functionName).length - 1 > functionParameter.getLength())
+            {
+                return functionName + ": expects " + (parametersOfFunction.get(functionName).length - 2) + " argument, but found " + (functionParameter.getLength() - 1);
+            }
+        } else {
+            if (parametersOfFunction.get(functionName).length > functionParameter.getLength()
+                || parametersOfFunction.get(functionName).length < functionParameter.getLength())
+            {
+                return functionName + ": expects " + (parametersOfFunction.get(functionName).length - 1) + " argument, but found " + (functionParameter.getLength() - 1);
+            }
+        }
+
+        String expectedParameterType = "";
+        for (int parameterCount = 1; parameterCount < functionParameter.getLength(); parameterCount++) {
+            Element parameter = (Element) functionParameter.item(parameterCount);
+            String parameterType = parameter.getAttribute("type");
+            String parameterValue = parameter.getAttribute("value");
+
+            if (parameterCount < parametersOfFunction.get(functionName).length) {
+                expectedParameterType = (String) parametersOfFunction.get(functionName)[parameterCount];
+            }
+
+            if (expectedParameterType.equals("INFINITE") && caseInfiniteIndex < 0) {
+                caseInfiniteIndex = parameterCount - 1;
+            }
+
+
+            if (caseInfiniteIndex >= 0) {
+                expectedParameterType = (String) parametersOfFunction.get(functionName)[caseInfiniteIndex];
+            }
+
+            switch (parameterType) {
+                case "round":
+
+                    NodeList nestedExpression = parameter.getChildNodes();
+                    nestedExpression = removeEmptyText(nestedExpression);
+                    Element nestedExpressionElement = (Element) nestedExpression.item(0);
+                    String nestedExpressionValue = nestedExpressionElement.getAttribute("value");
+                    String nestedExpressionType = nestedExpressionElement.getAttribute("type");
+
+                    switch (nestedExpressionType) {
+                        case "Name":
+                            String nestedReturnType = (String) parametersOfFunction.get(nestedExpressionValue)[0];
+                            if (! expectedParameterType.equals(nestedReturnType)) {
+                                return functionName + ": expects a " + expectedParameterType + ", given " + nestedReturnType;
+                            }
+                            break;
+                    }
+                    errorMessage = expressionCheck(parameter);
+
+                case "Number":
+                case "HashName":
+                case "String":
+                case "Boolean":
+                    if (! errorMessage.isEmpty()) return errorMessage;
+
+                    if (! expectedParameterType.equals(parameterType)) {
+                        return functionName + ": expects a " + expectedParameterType + ", given " + parameterValue;
+                    }
+                    break;
+                case "Name":
+                    // TODO Der Fall wenn die Variable definiert ist
+                    return parameterValue + ": this variable is not defined";
+
+            }
+
+
+        }
+
+        return errorMessage;
+    }
+
+
+    public String definitionCheck(Element definition) {
+        return null;
+    }
+
+
+    /**
+     * Removes #Text elements in a NodeList
+     */
     public NodeList removeEmptyText(NodeList nodeList) {
         for (int i=0; i<nodeList.getLength(); i++) {
             Node n = nodeList.item(i);
