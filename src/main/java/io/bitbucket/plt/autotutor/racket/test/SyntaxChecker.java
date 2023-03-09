@@ -26,13 +26,14 @@ public class SyntaxChecker {
                                         "expt", "floor", "log", "max", "min", "modulo", "negative?", "odd?", "positive?", "random",
                                         "round", "sqr", "sqrt", "sub1", "zero?"};
 
-    String[] preDefinedVariables = new String[]{"empty", "true", "false"};
+    /** Alle definierten Variabeln, sowohl vordefiniert, als auch selber definierte */
+    String[] knownVariables = new String[]{"empty", "true", "false"};
     List<String> knownFunctionsList;
+    List<String> knownVariablesList;
 
-    /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern
-     *  Das Array hat die Form {Rückgabetyp, Parametertyp, Mindestanzahl, Maximale Anzahl}
-     *  TODO Rückgabewert einer Funktion und Parameterliste mit unterschiedlichen Typen
-     *  Lösung zunächst mit eindimensionalem Array
+    /** Jedem Funktionsnamen wird ein Array zugeordnet mit Angaben zu den Parametern und dem Rückgabetyp.
+     *  Das Array hat die Form {Rückgabetyp, Parametertyp_1, ..., Parametertyp_n, (INFINITE)}.
+     *  INFINITE nur dann, wenn der vorherige Parametertyp unendlich oft vorkommen kann.
      */
     HashMap<String, Object[]> parametersOfFunction;
 
@@ -41,50 +42,51 @@ public class SyntaxChecker {
      */
     public SyntaxChecker() {
         knownFunctionsList = Arrays.asList(knownFunctions);
+        knownVariablesList = Arrays.asList(knownVariables);
         parametersOfFunction = new HashMap<>();
 
-        Object[] parameterNumberNumberTwoInfinite = {"Number", "Number", 2, Integer.MAX_VALUE};
+        Object[] parameterNumberNumberTwoInfinite = {"Number", "Number", "Number", "INFINITE"};
         parametersOfFunction.put("+", parameterNumberNumberTwoInfinite);
         parametersOfFunction.put("-", parameterNumberNumberTwoInfinite);
         parametersOfFunction.put("*", parameterNumberNumberTwoInfinite);
         parametersOfFunction.put("/", parameterNumberNumberTwoInfinite);
 
-        Object[] parameterBooleanNumberTwoInfinite = {"Boolean", "Number", 2, Integer.MAX_VALUE};
+        Object[] parameterBooleanNumberTwoInfinite = {"Boolean", "Number", "Number", "INFINITE"};
         parametersOfFunction.put("<", parameterBooleanNumberTwoInfinite);
         parametersOfFunction.put("<=", parameterBooleanNumberTwoInfinite);
         parametersOfFunction.put(">", parameterBooleanNumberTwoInfinite);
         parametersOfFunction.put(">=", parameterBooleanNumberTwoInfinite);
 
-        Object[] parameterNumberumberOneInfinite = {"Number", "Number", 1, Integer.MAX_VALUE};
+        Object[] parameterNumberumberOneInfinite = {"Number", "Number", "INFINITE"};
         parametersOfFunction.put("max", parameterNumberumberOneInfinite);
         parametersOfFunction.put("min", parameterNumberumberOneInfinite);
 
-        Object[] parameterNumberNumberOneOne = {"Number", "Number", 1, 1};
-        parametersOfFunction.put("abs", parameterNumberNumberOneOne);
-        parametersOfFunction.put("add1", parameterNumberNumberOneOne);
-        parametersOfFunction.put("ceiling", parameterNumberNumberOneOne);
-        parametersOfFunction.put("floor", parameterNumberNumberOneOne);
-        parametersOfFunction.put("random", parameterNumberNumberOneOne);
-        parametersOfFunction.put("round", parameterNumberNumberOneOne);
-        parametersOfFunction.put("sqr", parameterNumberNumberOneOne);
-        parametersOfFunction.put("sqrt", parameterNumberNumberOneOne);
-        parametersOfFunction.put("sub1", parameterNumberNumberOneOne);
+        Object[] parameterNumberNumber = {"Number", "Number"};
+        parametersOfFunction.put("abs", parameterNumberNumber);
+        parametersOfFunction.put("add1", parameterNumberNumber);
+        parametersOfFunction.put("ceiling", parameterNumberNumber);
+        parametersOfFunction.put("floor", parameterNumberNumber);
+        parametersOfFunction.put("random", parameterNumberNumber);
+        parametersOfFunction.put("round", parameterNumberNumber);
+        parametersOfFunction.put("sqr", parameterNumberNumber);
+        parametersOfFunction.put("sqrt", parameterNumberNumber);
+        parametersOfFunction.put("sub1", parameterNumberNumber);
 
-        Object[] parameterBooleanNumberOneOne = {"Boolean", "Number", 1, 1};
-        parametersOfFunction.put("even?", parameterBooleanNumberOneOne);
-        parametersOfFunction.put("odd?", parameterBooleanNumberOneOne);
-        parametersOfFunction.put("negative?", parameterBooleanNumberOneOne);
-        parametersOfFunction.put("positive?", parameterBooleanNumberOneOne);
-        parametersOfFunction.put("zero?", parameterBooleanNumberOneOne);
+        Object[] parameterBooleanNumber = {"Boolean", "Number"};
+        parametersOfFunction.put("even?", parameterBooleanNumber);
+        parametersOfFunction.put("odd?", parameterBooleanNumber);
+        parametersOfFunction.put("negative?", parameterBooleanNumber);
+        parametersOfFunction.put("positive?", parameterBooleanNumber);
+        parametersOfFunction.put("zero?", parameterBooleanNumber);
 
-        Object[] parameterHashnameNumberOneOne = {"HashName", "Number", 1, 1};
-        parametersOfFunction.put("exp", parameterHashnameNumberOneOne);
-        parametersOfFunction.put("log", parameterHashnameNumberOneOne);
+        Object[] parameterHashnameNumber = {"HashName", "Number"};
+        parametersOfFunction.put("exp", parameterHashnameNumber);
+        parametersOfFunction.put("log", parameterHashnameNumber);
 
 
-        Object[] parameterNumberNumberTwoTwo = {"Number", "Number", 2, 2};
-        parametersOfFunction.put("expt", parameterNumberNumberTwoTwo);
-        parametersOfFunction.put("modulo", parameterNumberNumberTwoTwo);
+        Object[] parameterNumberNumberNumber = {"Number", "Number", "Number"};
+        parametersOfFunction.put("expt", parameterNumberNumberNumber);
+        parametersOfFunction.put("modulo", parameterNumberNumberNumber);
 
 
     }
@@ -92,7 +94,7 @@ public class SyntaxChecker {
 
     public void check(String rktString) {
         int[] brackets = bracketCheck(rktString);
-
+        String errorMessage = syntaxCheck(rktString);
     }
 
     /**
@@ -214,206 +216,231 @@ public class SyntaxChecker {
 
     public void nullTeiler() {}
 
-    /**
-     * Checks if a found function name is already defined.
-     * If true, checks over the given parameters of that function wether they fit the expected parameters of that function or not.
-     * @param rktString String to be checked
-     * @return          A message containing information about the function name and wrong parameters,
-     *                  of the first function found, that does not fulfill the expected criteria
-     */
-    public String parameterCheck(String rktString) {
-        String errorMessage = "";
 
+    /**
+     * Makes XML-String from the given Racket-String
+     * and divides the given Racket-Syntax into Expressions or Definitions
+     * and checks them seperatly
+     * @param rktString A String with Racket-Syntax
+     * @return          A String containing an error-message, if there is a syntax-error in rktString
+     */
+    public String syntaxCheck(String rktString) {
+        String errorMessage = "";
         try {
-            DrRacketInterpreter inter = new DrRacketInterpreter(rktString);
-            System.out.println(inter.getXml());
+            DrRacketInterpreter interpreter = new DrRacketInterpreter(rktString);
+            System.out.println(interpreter.getXml());
 
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
-            Document document = builder.parse(new InputSource(new StringReader(inter.getXml())));
+            Document document = builder.parse(new InputSource(new StringReader(interpreter.getXml())));
 
             Element root = document.getDocumentElement();
 
-            NodeList initialNodeList = root.getChildNodes();
-            initialNodeList = removeEmptyText(initialNodeList);
-            for (int i=0; i<initialNodeList.getLength(); i++) {
-                Node initial = initialNodeList.item(i);
-                NodeList children = initial.getChildNodes();
-                children = removeEmptyText(children);
+            NodeList rootChildren = root.getChildNodes();
+            rootChildren = removeEmptyText(rootChildren);
+            for (int childrenOfRootCount = 0; childrenOfRootCount < rootChildren.getLength(); childrenOfRootCount++) {
+                Element defOrExpr = (Element) rootChildren.item(childrenOfRootCount);
+                errorMessage = defAndExprCheck(defOrExpr);
 
-                String functionName = "";
-                // Jedes Objekt-Array hat folgende Struktur: {Typ, min, max}
-                ArrayList<Object[]> parameterExpected = new ArrayList<>();
-                // Jedes Objekt-Array hat folgende Struktur: {Typ, count}
-                ArrayList<Object[]> parameterGiven = new ArrayList<>();
-                Object[] givenTypeMinMax = new Object[]{"", 0};
-                for (int j=0; j<children.getLength(); j++) {
-
-                    Element child = (Element) children.item(j);
-                    String type = child.getAttribute("type");
-                    String value = child.getAttribute("value");
-                    switch (type) {
-                        case "Name":
-                            if (j==0) {
-                                if (value.equals("define")) {
-                                    definitionCheck(children);
-                                }
-                                if (knownFunctionsList.contains(value)) {
-                                    functionName = value;
-                                    Object[] expectedParameters = parametersOfFunction.get(functionName);
-
-                                    Object[] paraMinMax = new Object[3];
-                                    for (int k=1; k<expectedParameters.length; k++) {
-                                        if ((k-1)%3==0) {
-                                            paraMinMax[0] = expectedParameters[k];
-                                        } else if ((k-1)%3==1) {
-                                            paraMinMax[1] = expectedParameters[k];
-                                        } else {
-                                            paraMinMax[2] = expectedParameters[k];
-                                            parameterExpected.add(paraMinMax);
-                                            paraMinMax = new Object[3];
-                                        }
-                                    }
-                                } else {
-                                    return child.getAttribute("value") + ": this function is not defined";
-                                }
-                            }
-                            break;
-                        case "Number":
-                        case "HashName":
-                            int index = -1;
-                            boolean matchFound = false;
-                            for (Object[] array : parameterExpected){
-                                index++;
-                                if (array[0].equals("Number") || array[0].equals("HashName")) {
-                                    givenTypeMinMax[0] = array[0];
-                                    int count = (int) givenTypeMinMax[1];
-                                    givenTypeMinMax[1] = count + 1;
-                                    parameterGiven.add(givenTypeMinMax);
-                                    matchFound = true;
-                                    break;
-                                }
-                            }
-                            if (matchFound) break;
-                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
-                        case "String":
-                            index = -1;
-                            matchFound = false;
-                            for (Object[] array : parameterExpected) {
-                                index++;
-                                System.out.println(array[0]);
-                                if (array[0].equals("String")) {
-                                    givenTypeMinMax[0] = array[0];
-                                    int count = (int) givenTypeMinMax[1];
-                                    givenTypeMinMax[1] = count + 1;
-                                    parameterGiven.add(givenTypeMinMax);
-                                    matchFound = true;
-                                    break;
-                                }
-                            }
-                            if (matchFound) break;
-                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
-                        case "Boolean":
-                            index = -1;
-                            matchFound = false;
-                            for (Object[] array : parameterExpected) {
-                                index++;
-                                if (array[0].equals("Boolean")) {
-                                    givenTypeMinMax[0] = array[0];
-                                    int count = (int) givenTypeMinMax[1];
-                                    givenTypeMinMax[1] = count + 1;
-                                    parameterGiven.add(givenTypeMinMax);
-                                    matchFound = true;
-                                    break;
-                                }
-                            }
-                            if (matchFound) break;
-                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + value;
-                        case "round":
-                            NodeList nestedFunction = child.getChildNodes();
-                            nestedFunction = removeEmptyText(nestedFunction);
-                            Element nestedFunctionElement = (Element) nestedFunction.item(0);
-                            String nestedFunctionName = nestedFunctionElement.getAttribute("value");
-                            Object[] nestedFunctionParameters = parametersOfFunction.get(nestedFunctionName);
-
-                            index = -1;
-                            matchFound = false;
-                            for (Object[] array : parameterExpected) {
-                                index++;
-                                if (array[0].equals(nestedFunctionParameters[0])) {
-                                    givenTypeMinMax[0] = array[0];
-                                    int count = (int) givenTypeMinMax[1];
-                                    givenTypeMinMax[1] = count + 1;
-                                    parameterGiven.add(givenTypeMinMax);
-                                    matchFound = true;
-                                    break;
-                                }
-                            }
-                            if (matchFound) break;
-                            return functionName + ": expects a " + parameterExpected.get(index)[0] + ", given " + nestedFunctionParameters[0];
-                    }
-                }
-
-                for (int a=0; a<parameterExpected.size(); a++) {
-
-                    if (parameterGiven.isEmpty()) {
-                        if ((int) parameterExpected.get(a)[1] > 0) {
-                            return functionName + ": expects " + parameterExpected.get(a)[1] + " argument, but found 0";
-                        }
-                    } else {
-                        String expectedType = (String) parameterExpected.get(a)[0];
-                        String givenType = (String) parameterGiven.get(a)[0];
-                        if (expectedType.equals(givenType)) {
-                            if ((int) parameterExpected.get(a)[1] > (int) parameterGiven.get(a)[1]) {
-                                return functionName + ": expects " + parameterExpected.get(a)[1] + " argument, but found " + parameterGiven.get(a)[1];
-                            } else if ((int) parameterExpected.get(a)[2] < (int) parameterGiven.get(a)[1]) {
-                                return functionName + ": expects " + parameterExpected.get(a)[2] + " argument, but found " + parameterGiven.get(a)[1];
-                            }
-                        }
-                    }
-                }
-
-                givenTypeMinMax = new Object[]{"", 0};
+                if (! errorMessage.isEmpty()) break;
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
         return errorMessage;
-
     }
 
-
-
-    public String expressionCheck(String functionName, NodeList expressionSyntaxNodeList) {
+    /**
+     * Decides wether a given Element marks the start of a Definition or an Expression.
+     * Checks them each a different way.
+     * @param defOrExpr An Element containing either an opening-Bracket or an Expression
+     * @return          A String containing an error-message, if there is a syntax-error the given Definition or Expression (without Brackets).
+     */
+    public String defAndExprCheck(Element defOrExpr) {
         String errorMessage = "";
 
+        String typeDefOrExpr = defOrExpr.getAttribute("type");
+        switch (typeDefOrExpr) {
+            case "round":
+                NodeList childrenOfDefOrExpr = defOrExpr.getChildNodes();
+                childrenOfDefOrExpr = removeEmptyText(childrenOfDefOrExpr);
+                Element firstElement = (Element) childrenOfDefOrExpr.item(0);
+                String typeFirstElement = firstElement.getAttribute("type");
+                switch (typeFirstElement) {
+                    case "define":
+                    case "define-struct":
+                        return definitionCheck(defOrExpr);
+                    case "Name":
+                        return expressionCheck(defOrExpr);
+                    default:
+                        return "function call: expected a function after the open parenthesis";
+                }
+            case "Name":
+                return expressionCheck(defOrExpr);
+            case "Number":
+            case "HashName":
+            case "String":
+            case "Boolean":
+                return "";
+            default:
+                return "something unexpected happened";
+        }
+    }
+
+    /**
+     * Decides wether the given Expression is a Function, Condition, if-statement, and-statement, or or-statement.
+     * Checks most of them in a seperate way.
+     * @param expression An Element containing an opening-Bracket, that marks the start of an Expression.
+     * @return          A String containing an error-message, if there is a syntax-error the given Expression
+     */
+    public String expressionCheck(Element expression) {
+        String errorMessage = "";
+
+        String expressionValue = expression.getAttribute("value");
+        if (! expressionValue.isEmpty() && knownFunctionsList.contains(expressionValue)) {
+            return expressionValue + ": expects a function call, but there is no open paranthesis before this function";
+        }
+        if (! expressionValue.isEmpty() && ! knownVariablesList.contains(expressionValue)) {
+            return expressionValue + ": this variable is not defined";
+        }
+
+        NodeList expressionChildren = expression.getChildNodes();
+        expressionChildren = removeEmptyText(expressionChildren);
+        Element expressionFirstChild = (Element) expressionChildren.item(0);
+        String functionName = expressionFirstChild.getAttribute("value");
         switch (functionName) {
             case "cond":
-                //conditionCheck(expressionSyntaxNodeList);
+                errorMessage = conditionCheck(expression);
                 break;
             case "if":
+                errorMessage = ifStatementCheck(expression);
+                break;
             case "and":
+                errorMessage = andStatementCheck(expression);
+                break;
             case "or":
+                errorMessage = orStatementCheck(expression);
+                break;
+            default:
+                if (knownFunctionsList.contains(functionName)) {
+                    errorMessage = functionCheck(expression);
+                    break;
+                }
+                return functionName + ": this function is not defined";
         }
-        for (int i = 1; i < expressionSyntaxNodeList.getLength(); i++) {
-            Element child = (Element) expressionSyntaxNodeList.item(i);
-            String expressionName = child.getAttribute("type");
-            String expressionValue = child.getAttribute("value");
 
-            switch (expressionName) {
-                case "if":
+        return errorMessage;
+    }
+
+    public String conditionCheck(Element condition) {
+        return null;
+    }
+
+    public String ifStatementCheck(Element ifStatement) {
+        return null;
+    }
+
+    public String andStatementCheck(Element andStatement) {
+        return null;
+    }
+
+    public String orStatementCheck(Element orStatement) {
+        return null;
+    }
+
+    /**
+     * Checks the given Function for syntax-errors.
+     * @param function An Element containing an opening-Bracket, that marks the start of a Function.
+     * @return          A String containing an error-message, if there is a syntax-error the given Function
+     */
+    public String functionCheck(Element function) {
+        String errorMessage = "";
+        int caseInfiniteIndex = -1;
+
+        NodeList functionChildren = function.getChildNodes();
+        Element functionFirstChild = (Element) functionChildren.item(0);
+        String functionName = functionFirstChild.getAttribute("value");
+        NodeList functionParameter = removeEmptyText(functionChildren);
+
+        // A few pre-defined-functions can hold an infinite amount of arguments/attributes/parameters.
+        if (parametersOfFunction.get(functionName)[parametersOfFunction.get(functionName).length - 1].equals("INFINITE")) {
+            if (parametersOfFunction.get(functionName).length - 1 > functionParameter.getLength())
+            {
+                return functionName + ": expects " + (parametersOfFunction.get(functionName).length - 2) + " argument, but found " + (functionParameter.getLength() - 1);
             }
+        } else {
+            if (parametersOfFunction.get(functionName).length > functionParameter.getLength()
+                || parametersOfFunction.get(functionName).length < functionParameter.getLength())
+            {
+                return functionName + ": expects " + (parametersOfFunction.get(functionName).length - 1) + " argument, but found " + (functionParameter.getLength() - 1);
+            }
+        }
+
+        String expectedParameterType = "";
+        for (int parameterCount = 1; parameterCount < functionParameter.getLength(); parameterCount++) {
+            Element parameter = (Element) functionParameter.item(parameterCount);
+            String parameterType = parameter.getAttribute("type");
+            String parameterValue = parameter.getAttribute("value");
+
+            if (parameterCount < parametersOfFunction.get(functionName).length) {
+                expectedParameterType = (String) parametersOfFunction.get(functionName)[parameterCount];
+            }
+
+            if (expectedParameterType.equals("INFINITE") && caseInfiniteIndex < 0) {
+                caseInfiniteIndex = parameterCount - 1;
+            }
+
+
+            if (caseInfiniteIndex >= 0) {
+                expectedParameterType = (String) parametersOfFunction.get(functionName)[caseInfiniteIndex];
+            }
+
+            switch (parameterType) {
+                case "round":
+
+                    NodeList nestedExpression = parameter.getChildNodes();
+                    nestedExpression = removeEmptyText(nestedExpression);
+                    Element nestedExpressionElement = (Element) nestedExpression.item(0);
+                    String nestedExpressionValue = nestedExpressionElement.getAttribute("value");
+                    String nestedExpressionType = nestedExpressionElement.getAttribute("type");
+
+                    switch (nestedExpressionType) {
+                        case "Name":
+                            String nestedReturnType = (String) parametersOfFunction.get(nestedExpressionValue)[0];
+                            if (! expectedParameterType.equals(nestedReturnType)) {
+                                return functionName + ": expects a " + expectedParameterType + ", given " + nestedReturnType;
+                            }
+                            break;
+                    }
+                    errorMessage = expressionCheck(parameter);
+
+                case "Number":
+                case "HashName":
+                case "String":
+                case "Boolean":
+                    if (! errorMessage.isEmpty()) return errorMessage;
+
+                    if (! expectedParameterType.equals(parameterType)) {
+                        return functionName + ": expects a " + expectedParameterType + ", given " + parameterValue;
+                    }
+                    break;
+                case "Name":
+                    // TODO Der Fall wenn die Variable definiert ist
+                    return parameterValue + ": this variable is not defined";
+
+            }
+
+
         }
 
         return errorMessage;
     }
 
 
-
-    public void definitionCheck(NodeList nodeListDefinitionSyntax) {
-        System.out.println("mom gay");
+    public String definitionCheck(Element definition) {
+        return null;
     }
+
 
     /**
      * Removes #Text elements in a NodeList

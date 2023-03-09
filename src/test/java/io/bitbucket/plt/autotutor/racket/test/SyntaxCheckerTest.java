@@ -38,23 +38,31 @@ class SyntaxCheckerTest {
     }
 
     @Test
-    void parameterCheck() {
-        assertEquals("", syntaxChecker.parameterCheck(""));
-        assertEquals("", syntaxChecker.parameterCheck("(+ 1 1)"));
-        assertEquals("UndefinedFunction: this function is not defined",
-                syntaxChecker.parameterCheck("(UndefinedFunction 1 1)"));
+    void syntaxCheck() {
+        assertEquals("", syntaxChecker.syntaxCheck(""));
+        assertEquals("", syntaxChecker.syntaxCheck("(+ 1 1)"));
 
-        assertEquals("+: expects a Number, given \"Not a Number\"", syntaxChecker.parameterCheck("(+ \"Not a Number\" 1"));
+        assertEquals("", syntaxChecker.syntaxCheck("(+ 1 1 1 1 1 1 1 111 1 1 1  1 111)"));
+        assertEquals("+: expects a Number, given true", syntaxChecker.syntaxCheck("(+ 1 1 1 1 1 1 1 111 1 1 1  1 true)"));
 
-        assertEquals("abs: expects 1 argument, but found 0", syntaxChecker.parameterCheck("(abs )"));
-        assertEquals("abs: expects 1 argument, but found 2", syntaxChecker.parameterCheck("(abs 1 1)"));
+        assertEquals("+: expects a Number, given true", syntaxChecker.syntaxCheck("(+ 1 1) (+ true \"hallo\")"));
 
-        assertEquals("min: expects 1 argument, but found 0", syntaxChecker.parameterCheck("(min )"));
+        assertEquals("+: expects a Number, given Boolean", syntaxChecker.syntaxCheck("(+ (< 1 1) 1"));
+        assertEquals("+: expects a Number, given true", syntaxChecker.syntaxCheck("(+ (+ true 1) 1"));
+        assertEquals("+: expects a Number, given Boolean", syntaxChecker.syntaxCheck("(+ (+ (> 1 1 1 1 1 1 1) 1) 1"));
 
-        assertEquals("expt: expects 2 argument, but found 1", syntaxChecker.parameterCheck("(expt 1)"));
-        assertEquals("expt: expects 2 argument, but found 3", syntaxChecker.parameterCheck("(expt 1 1 1)"));
+        assertEquals("+: expects 2 argument, but found 1", syntaxChecker.syntaxCheck("(+ 1)"));
 
-        assertEquals("", syntaxChecker.parameterCheck("(+ 1 (+ 1 1))"));
-        assertEquals("+: expects a Number, given Boolean", syntaxChecker.parameterCheck("(+ 1 (< 1 1))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(abs 1)"));
+        assertEquals("abs: expects 1 argument, but found 0", syntaxChecker.syntaxCheck("(abs )"));
+        assertEquals("abs: expects 1 argument, but found 2", syntaxChecker.syntaxCheck("(abs 1 1)"));
+
+        assertEquals("hallo: this function is not defined", syntaxChecker.syntaxCheck("(hallo 1 1)"));
+
+        assertEquals("", syntaxChecker.syntaxCheck("1"));
+        assertEquals("", syntaxChecker.syntaxCheck("\"hallo\" 1 true"));
+        assertEquals("hallo: this variable is not defined", syntaxChecker.syntaxCheck("hallo"));
+        assertEquals("hallo: this variable is not defined", syntaxChecker.syntaxCheck("(+ hallo 1)"));
+        assertEquals("+: expects a function call, but there is no open paranthesis before this function", syntaxChecker.syntaxCheck("+ hallo 1"));
     }
 }
