@@ -146,5 +146,15 @@ class SyntaxCheckerTest {
         assertEquals("range: expects a Number, given #\\c", syntaxChecker.syntaxCheck("(range 0 #\\c 2)"));
         assertEquals("remove: expects a List, given 1", syntaxChecker.syntaxCheck("(remove \"hello\" 1)"));
         assertEquals("remove: expects 2 argument, but found 3", syntaxChecker.syntaxCheck("(remove \"hello\" smh (list \"hello\" #true \"hello\"))"));
+
+        assertEquals("", syntaxChecker.syntaxCheck("(if true true false)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(if (< 2 1) pi  (list 1 2 3))"));
+        assertEquals("if: expects a Boolean, given Number", syntaxChecker.syntaxCheck("(if (+ 2 1) pi  (list 1 2 3))"));
+
+        /*assertEquals("", syntaxChecker.syntaxCheck("(cond\n" +
+                "    [(empty? '()) (list empty)]\n" +
+                "    [else (if (<= '() (first empty)) (cons '() empty) (cons (first empty) (rest l)))])"));
+
+         */
     }
 }

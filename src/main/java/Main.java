@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        String test = "(list 1 \"hallo\" #\\a false pi empty null '() (cons 1 '()) (list 1 2 3) ye)";
+        String test = "(and true (cond [false true] [else true]) false)";
 
         SyntaxChecker syntaxChecker = new SyntaxChecker();
         System.out.println(syntaxChecker.syntaxCheck(test)); System.out.println();
