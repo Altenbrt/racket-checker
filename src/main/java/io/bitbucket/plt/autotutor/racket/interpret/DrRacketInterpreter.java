@@ -109,7 +109,7 @@ public class DrRacketInterpreter {
 
 		//Code Updates
 
-		System.out.println("IM CODE --------------------------");
+		//System.out.println("IM CODE --------------------------");
 
 
 
@@ -135,7 +135,7 @@ public class DrRacketInterpreter {
 		List<Parameter> tempParameterList = new LinkedList<>();
 		Expression tempBody = new Expression();
 		Expression exaccRem = null;	//exacc = expression aktuell Remember
-
+/*
 		while (iter.hasNext()) {	//Itterieren über die Eingabe
 			String now = (String) iter.next();	//now = Aktueller String (Zeile des Eingabecodes)
 			if (now.contains("<paren") && now.contains("type=\"round\">")) {	//Verscchachtelung
@@ -388,6 +388,8 @@ public class DrRacketInterpreter {
 		//expressionList.stream().map(x -> x.evaluate(new Expression())).forEach(x -> System.out.println(x)); ALT
 */
 		System.out.println("CODE ENDE--------------------------");
+
+ */
 
 	}
 

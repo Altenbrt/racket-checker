@@ -7,18 +7,14 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
+        String test = "(and true (cond [false true] [else true]) false)";
 
         SyntaxChecker syntaxChecker = new SyntaxChecker();
-        //System.out.println(syntaxChecker.parameterCheck("(define (smh x y) (+ x y))"));
-
-        HashMap<String, String> smh = new HashMap<>();
-
-        System.out.println(smh.get("hallo"));
+        System.out.println(syntaxChecker.syntaxCheck(test)); System.out.println();
 
 
-        /*
         try {
-            DrRacketInterpreter inter = new DrRacketInterpreter("(and true false)");
+            DrRacketInterpreter inter = new DrRacketInterpreter(test);
             System.out.println(inter.getXml());
 
 
