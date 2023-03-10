@@ -39,6 +39,7 @@ class SyntaxCheckerTest {
 
     @Test
     void syntaxCheck() {
+
         assertEquals("", syntaxChecker.syntaxCheck("(* 5 3)"));
         assertEquals("", syntaxChecker.syntaxCheck("(* 5 3 2)"));
         assertEquals("", syntaxChecker.syntaxCheck("(+ 2/3 1/16)"));
@@ -151,10 +152,14 @@ class SyntaxCheckerTest {
         assertEquals("", syntaxChecker.syntaxCheck("(if (< 2 1) pi  (list 1 2 3))"));
         assertEquals("if: expects a Boolean, given Number", syntaxChecker.syntaxCheck("(if (+ 2 1) pi  (list 1 2 3))"));
 
-        /*assertEquals("", syntaxChecker.syntaxCheck("(cond\n" +
-                "    [(empty? '()) (list empty)]\n" +
-                "    [else (if (<= '() (first empty)) (cons '() empty) (cons (first empty) (rest l)))])"));
+        assertEquals("", syntaxChecker.syntaxCheck("(cond [true 1])"));
+        assertEquals("", syntaxChecker.syntaxCheck("(cond [true 1] [false 2] [else true])"));
+        assertEquals("cond: found an else clause that isn't the last clause in its cond expression", syntaxChecker.syntaxCheck("(cond [true 1] [else true] [false 2])"));
+        assertEquals("cond: expected a clause with a question and an answer, but found Number", syntaxChecker.syntaxCheck("(cond [true 1] 1 [false 2])"));
+        assertEquals("cond: expected a clause with a question and an answer, but found a clause with 3 parts", syntaxChecker.syntaxCheck("(cond [true 1] [false 2] [else true \"hallo\"])"));
+        assertEquals("<: expects a Number, given true", syntaxChecker.syntaxCheck("(cond [true 1] [false 2] [else (< 1 true)])"));
+        assertEquals("+: expects a Number, given #\\c", syntaxChecker.syntaxCheck("(cond [true 1] [false (+ 1 #\\c)] [else (< 1 2)])"));
+        assertEquals("<: expects a Number, given List", syntaxChecker.syntaxCheck("(cond [(< '() 1) 1] [false (+ 1 #\\c)] [else (< 1 2)])"));
 
-         */
     }
 }

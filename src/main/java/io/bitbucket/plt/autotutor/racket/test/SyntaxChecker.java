@@ -439,38 +439,80 @@ public class SyntaxChecker {
                 // if the expression is a condition
                 if (functionName.equals("cond")) {
                     if (! parameterType.equals("square")) {
+                        if (parameterType.equals("round")) {
+                            Element nestedExpressionElement = (Element) removeEmptyText(parameter.getChildNodes()).item(0);
+                            String nestedReturnValue = nestedExpressionElement.getAttribute("value");
+                            return nestedReturnValue + ": expected a function call, but there is no open parenthesis before this function";
+                        }
                         return functionName + ": expected a clause with a question and an answer, but found " + parameterType;
                     } else {
+                        // Hier sind eckige Klammern, parameter ist eine eckige Klammer
                         NodeList nestedExpression = parameter.getChildNodes();
-                        nestedExpression = removeEmptyText(nestedExpression);
-                        Element nestedExpressionElement = (Element) nestedExpression.item(0);
-                        String nestedExpressionValue = nestedExpressionElement.getAttribute("value");
-                        String nestedReturnType = nestedExpressionElement.getAttribute("type");
-                        Element parentElement = null;
+                        nestedExpression = removeEmptyText(nestedExpression);   // kinder von der eckigen Klammer, dürfen maximal zwei sein
 
-                        while (nestedExpressionElement.getTagName().equals("paren")) {
-                            parentElement = nestedExpressionElement;
-                            nestedExpression = nestedExpressionElement.getChildNodes();
-                            nestedExpression = removeEmptyText(nestedExpression);
-                            nestedExpressionElement = (Element) nestedExpression.item(0);
-                            nestedExpressionValue = nestedExpressionElement.getAttribute("value");
-                            nestedReturnType = parametersOfFunction.get(nestedExpressionValue)[0];
+                        if (nestedExpression.getLength() != 2) {
+                            return "cond: expected a clause with a question and an answer, but found a clause with " + nestedExpression.getLength() + " parts";
                         }
 
-                        if (nestedExpressionValue.equals("else")) {
-                            if (parameterCount < expressionChildren.getLength() - 1) {
-                                return functionName + ": found an else clause that isnt the last clause in its cond expression";
+                        Element nestedReturnElement = (Element) nestedExpression.item(0);   // Das hier muss ein boolean sein
+                        String nestedReturnType = nestedReturnElement.getAttribute("type");
+                        String nestedReturnValue = nestedReturnElement.getAttribute("value");
+                        String nestedReturnTag = nestedReturnElement.getTagName();
+                        if (!nestedReturnType.equals("Boolean")) {
+                            if (nestedReturnValue.equals("else")) {
+                                if (parameterCount < expressionChildren.getLength() - 1) {
+                                    return "cond: found an else clause that isn't the last clause in its cond expression";
+                                }
+                                Element nestedSecondElement = (Element) nestedExpression.item(1);
+                                String nestedSecondType = nestedSecondElement.getAttribute("type");
+                                if (nestedSecondType.equals("round")){
+                                    errorMessage = expressionCheck((Element) nestedExpression.item(1));
+                                    if (!errorMessage.isEmpty()) return errorMessage;
+                                } else {
+                                    errorMessage = defAndExprCheck((Element) nestedExpression.item(1));
+                                    if (!errorMessage.isEmpty()) return errorMessage;
+                                }
+                                continue;
+                            }
+                            if (nestedReturnType.equals("Name")) {
+                                return "cond: question result is not true or false: " + nestedReturnValue;
+                            }
+                            if (nestedReturnTag.equals("quote") && emptyListCheck(nestedReturnElement)) {
+                                return "cond: question result is not true or false: '()";
+                            }
+
+                            if (nestedReturnType.equals("round")) {
+                                nestedExpression = removeEmptyText(nestedReturnElement.getChildNodes());
+                                nestedReturnElement = (Element) nestedExpression.item(0);
+                                if (knownFunctionsList.contains(nestedReturnElement.getAttribute("value"))) {
+                                    String returnType = parametersOfFunction.get(nestedReturnElement.getAttribute("value"))[0];
+                                    if (! returnType.equals("Boolean")) {
+                                        return "cond: question result is not true or false: " + returnType;
+                                    } else {
+                                        errorMessage = expressionCheck((Element) nestedReturnElement.getParentNode());
+                                        if (!errorMessage.isEmpty()) return errorMessage;
+                                        continue;
+                                    }
+                                } else {
+                                    return nestedReturnElement.getAttribute("value") + ": this function is not defined";
+                                }
+                            }
+
+                            return "cond: question result is not true or false: " + nestedReturnType;
+                        } else {
+                            Element nestedSecondElement = (Element) nestedExpression.item(1);
+                            String nestedSecondType = nestedSecondElement.getAttribute("type");
+                            if (nestedSecondType.equals("round")){
+                                errorMessage = expressionCheck(nestedSecondElement);
+                                if (!errorMessage.isEmpty()) return errorMessage;
+                                System.out.println(errorMessage);
+                            } else {
+                                errorMessage = defAndExprCheck((Element) nestedExpression.item(1));
+                                if (!errorMessage.isEmpty()) return errorMessage;
                             }
                             continue;
                         }
-
-                        if (! nestedReturnType.equals("Boolean")) {
-                            return functionName + ": question result is not true or false: " + nestedExpressionValue;
-                        }
-                        if (! (parentElement == null))
-                            errorMessage = expressionCheck(parameter);
                     }
-                    continue;
                 }
 
                 // if the expression is any function call other than condition
@@ -491,6 +533,7 @@ public class SyntaxChecker {
                                 }
                             }
                             errorMessage = expressionCheck(parameter);      // Recursive call of expressionCheck for the nested function
+                            if (!errorMessage.isEmpty()) return errorMessage;
                             break;
 
                         case "Number":      // If the given attribute is a literal, its Type must fit the expected Type
