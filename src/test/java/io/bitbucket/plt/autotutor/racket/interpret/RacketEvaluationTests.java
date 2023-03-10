@@ -18,34 +18,42 @@ public class RacketEvaluationTests {
 
         String s = "(* 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(* 0 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(* 1 (* 2 1))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(* 1 (* 2 1) 1 (* 0 5) 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(* (* 2 2) (* 1 (* 3 2)))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(24), inter.evaluateExpressions());
 
         s = "(* 0.5 0.25)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString((float)0.125), inter.evaluateExpressions());
 
         s = "(* -2 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(* -2 -1 -4)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-8), inter.evaluateExpressions());
     }
 
@@ -971,6 +979,31 @@ public class RacketEvaluationTests {
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
+    @Test
+    void testCustomFunction() throws Exception {
+        String s = "(define (double x)\n" +
+                "(* x 2))\n" +
+                "(double 21)";
+        DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(42), inter.evaluateExpressions());
+
+        s = "(define (double x)\n" +
+                "(* x 2))\n" +
+                "(define (triple x)\n"+
+                "(* x 3))\n" +
+                "(double 21)";
+        inter = new DrRacketInterpreter(s);
+        assertEquals(Float.toString(42), inter.evaluateExpressions());
+
+        s = "(define (double x)\n" +
+                "(* x 2))\n" +
+                "(define (triple x)\n"+
+                "(* x 3))\n" +
+                "(triple 21)";
+        inter = new DrRacketInterpreter(s);
+        //assertEquals(Float.toString(63), inter.evaluateExpressions());
+
+    }
 
 
 }
