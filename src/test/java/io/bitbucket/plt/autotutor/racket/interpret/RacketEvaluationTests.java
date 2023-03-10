@@ -63,18 +63,22 @@ public class RacketEvaluationTests {
 
         String s = "(- 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(- 2 (- 2 1))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(- 1 (- 2 1) 1 (- 0 5))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
 
         s = "(- (- 2 2) (- 1 (- 3 2)))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
     }
 
@@ -84,26 +88,32 @@ public class RacketEvaluationTests {
 
         String s = "(+ 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(+ 1 (+ 2 1))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
 
         s = "(+ 1 (+ 2 1) 1 (+ 0 5))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(10), inter.evaluateExpressions());
 
         s = "(+ (+ 2 2) (+ 1 (+ 3 2)))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(10), inter.evaluateExpressions());
 
         s = "(+ 0.5 0.25)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString((float)0.75), inter.evaluateExpressions());
 
         s = "(+ -2 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-3), inter.evaluateExpressions());
     }
 
@@ -113,30 +123,37 @@ public class RacketEvaluationTests {
 
         String s = "(/ 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(/ 0 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(/ 1 (/ 2 1))";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString((float)0.5), inter.evaluateExpressions());
 
         s = "(/ 1 (/ 2 1) 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString((float)0.5), inter.evaluateExpressions());
 
         s = "(/ 0.5 0.25)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(/ -2 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(/ -2 -1 -4)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString((float)-0.5), inter.evaluateExpressions());
     }
 
@@ -150,6 +167,7 @@ public class RacketEvaluationTests {
                 .map(x -> x.toString())
                 .collect(Collectors.toList());
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(answer, inter.getAllExpressionEvaluations());
 
         s = "(+ 1 1) (+ 1 1)";
@@ -158,6 +176,7 @@ public class RacketEvaluationTests {
                 .map(x -> x.toString())
                 .collect(Collectors.toList());
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(answer, inter.getAllExpressionEvaluations());
 
         s = "(+ 1 1) (+ 1 1) \n(+ (+ 2 2) (+ 1 (+ 3 2)))";
@@ -166,6 +185,7 @@ public class RacketEvaluationTests {
                 .map(x -> x.toString())
                 .collect(Collectors.toList());
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(answer, inter.getAllExpressionEvaluations());
     }
 
@@ -175,30 +195,37 @@ public class RacketEvaluationTests {
 
         String s = "(< 1 20)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(< 2 3 4 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(< 1  1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(< 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(< 2 3 6 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(< 2 3 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(< -2 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -208,30 +235,37 @@ public class RacketEvaluationTests {
 
         String s = "(> 1 20)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(> 2 3 4 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(> 1  1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(> 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(> 30 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(> 0 -3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(> 20 -1 -3 -10)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -241,26 +275,32 @@ public class RacketEvaluationTests {
 
         String s = "(= 1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(= 1 1 1 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(= 1  2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(= 1  2 1 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(= 2 2 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(= -1 -1 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -270,30 +310,37 @@ public class RacketEvaluationTests {
 
         String s = "(<= 1 20)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(<= 2 2 4 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(<= 1  1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(<= 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(<= 2 3 6 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(<= 2 3 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(<= -2 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -303,30 +350,37 @@ public class RacketEvaluationTests {
 
         String s = "(>= 1 20)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(>= 2 2 4 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(>= 1  1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(>= 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(>= 30 2 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(>= 0 -3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(>= 20 -1 -3 -10)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -336,22 +390,27 @@ public class RacketEvaluationTests {
 
         String s = "(abs 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(abs -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(abs 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
 
         s = "(abs -0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
 
         s = "(abs 4 7 8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
     }
 
@@ -361,22 +420,27 @@ public class RacketEvaluationTests {
 
         String s = "(add1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(add1 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(add1 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1.5f), inter.evaluateExpressions());
 
         s = "(add1 -0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0.5f), inter.evaluateExpressions());
 
         s = "(add1 4 7 8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(5), inter.evaluateExpressions());
     }
 
@@ -386,38 +450,47 @@ public class RacketEvaluationTests {
 
         String s = "(ceiling 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(ceiling 1.1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(ceiling 1.8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(ceiling -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(ceiling -1.1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(ceiling 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(ceiling -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(ceiling -0.01)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(ceiling 4.8 3 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(5), inter.evaluateExpressions());
     }
 
@@ -425,30 +498,37 @@ public class RacketEvaluationTests {
     void testEven() throws Exception {
         String s = "(even? 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(even? 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(even? 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(even? 9)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(even? -9)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(even? -2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(even? 9 10 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -456,22 +536,27 @@ public class RacketEvaluationTests {
     void testExp() throws Exception {
         String s = "(exp 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(3), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(exp 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(7), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(exp 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(exp 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(exp 2 1 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(7), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
     }
 
@@ -481,38 +566,47 @@ public class RacketEvaluationTests {
 
         String s = "(floor 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(floor 1.1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(floor 1.8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(floor -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(floor -1.1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-2), inter.evaluateExpressions());
 
         s = "(floor 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(floor -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(floor -0.01)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(floor 4.8 3 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
     }
 
@@ -520,22 +614,27 @@ public class RacketEvaluationTests {
     void testLog() throws Exception {
         String s = "(log 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(log -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(log 3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(log 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
 
         s = "(log 2 1 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), Float.toString(Math.round(Float.valueOf(inter.evaluateExpressions()))));
     }
 
@@ -543,22 +642,27 @@ public class RacketEvaluationTests {
     void testMax() throws Exception {
         String s = "(max 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(max 1 2 3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(3), inter.evaluateExpressions());
 
         s = "(max -1 -6 -3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(max 10 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(10), inter.evaluateExpressions());
 
         s = "(max 10 20 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(20), inter.evaluateExpressions());
     }
 
@@ -566,22 +670,27 @@ public class RacketEvaluationTests {
     void testMin() throws Exception {
         String s = "(min 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(min 1 2 3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(min -1 -6 -3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-6), inter.evaluateExpressions());
 
         s = "(min 10 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(min 10 1 5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
     }
 
@@ -589,34 +698,42 @@ public class RacketEvaluationTests {
     void testModulo() throws Exception {
         String s = "(modulo 0 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(modulo 1 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(modulo 1 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(modulo 10 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(modulo 23 7)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(modulo -4 -2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(modulo -4 -3)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1), inter.evaluateExpressions());
 
         s = "(modulo -4 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
     }
 
@@ -624,26 +741,32 @@ public class RacketEvaluationTests {
     void testNegative() throws Exception {
         String s = "(negative? 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(negative? -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(negative? -20)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(negative? 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(negative? -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(negative? 9 10 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -651,26 +774,32 @@ public class RacketEvaluationTests {
     void testOdd() throws Exception {
         String s = "(odd? 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(odd? -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(odd? -20)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(odd? 0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(odd? -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(odd? 9 10 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -678,26 +807,32 @@ public class RacketEvaluationTests {
     void testPositive() throws Exception {
         String s = "(positive? 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(positive? -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(positive? -20)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(positive? 0)";    //Like Racket, but unintuitive
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(positive? -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(positive? 9 10 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
     }
 
@@ -705,6 +840,7 @@ public class RacketEvaluationTests {
     void testRandom() throws Exception {
         String s = "(random 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Integer.toString(0), inter.evaluateExpressions());
     }
 
@@ -712,42 +848,52 @@ public class RacketEvaluationTests {
     void testRound() throws Exception {
         String s = "(round 0)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(round 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(round 0.1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(round 0.9)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(round 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(round 0.51)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(round 0.49)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(round 1.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(2), inter.evaluateExpressions());
 
         s = "(round 3.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
 
         s = "(round 4.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
     }
 
@@ -755,30 +901,37 @@ public class RacketEvaluationTests {
     void testSqr() throws Exception {
         String s = "(sqr 0)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(sqr 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(sqr 2)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(4), inter.evaluateExpressions());
 
         s = "(sqr 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0.25f), inter.evaluateExpressions());
 
         s = "(sqr 4)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(16), inter.evaluateExpressions());
 
         s = "(sqr 8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(64), inter.evaluateExpressions());
 
         s = "(sqr -8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(64), inter.evaluateExpressions());
     }
 
@@ -786,14 +939,17 @@ public class RacketEvaluationTests {
     void testSqrt() throws Exception {
         String s = "(sqrt 0)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(sqrt 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(1), inter.evaluateExpressions());
 
         s = "(sqrt 9)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(3), inter.evaluateExpressions());
     }
 
@@ -801,22 +957,27 @@ public class RacketEvaluationTests {
     void testSub1() throws Exception {
         String s = "(sub1 1)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(0), inter.evaluateExpressions());
 
         s = "(sub1 -1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-2), inter.evaluateExpressions());
 
         s = "(sub1 0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-0.5f), inter.evaluateExpressions());
 
         s = "(sub1 -0.5)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(-1.5f), inter.evaluateExpressions());
 
         s = "(sub1 4 7 8)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(3), inter.evaluateExpressions());
     }
 
@@ -824,18 +985,22 @@ public class RacketEvaluationTests {
     void testZero() throws Exception {
         String s = "(zero? 0)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(zero? 1)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(zero? -0)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(zero? 109)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -843,50 +1008,62 @@ public class RacketEvaluationTests {
     void testBooleanEQ() throws Exception { //"EQ" => "=?"
         String s = "(boolean=? true true)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean=? true false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? false true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? false false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #true #true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean=? #true #false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #false #true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #false #false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #t #t)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean=? #t #f)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #f #t)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean=? #f #f)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -894,34 +1071,42 @@ public class RacketEvaluationTests {
     void testBooleanQ() throws Exception { //"Q" => "?"
         String s = "(boolean? true)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? 100)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(boolean? #f)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? #t)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? #false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? #true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(boolean? \"a b\")";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -929,26 +1114,32 @@ public class RacketEvaluationTests {
     void testFalseQ() throws Exception { //"Q" => "?"
         String s = "(false? true)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(false? false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(false? #true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(false? #false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(false? #f)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(false? #t)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -956,26 +1147,32 @@ public class RacketEvaluationTests {
     void testNot() throws Exception {
         String s = "(not true)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(not false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(not #true)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
 
         s = "(not #false)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(not #f)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(true), inter.evaluateExpressions());
 
         s = "(not #t)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Boolean.toString(false), inter.evaluateExpressions());
     }
 
@@ -985,6 +1182,7 @@ public class RacketEvaluationTests {
                 "(* x 2))\n" +
                 "(double 21)";
         DrRacketInterpreter inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(42), inter.evaluateExpressions());
 
         s = "(define (double x)\n" +
@@ -993,6 +1191,7 @@ public class RacketEvaluationTests {
                 "(* x 3))\n" +
                 "(double 21)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         assertEquals(Float.toString(42), inter.evaluateExpressions());
 
         s = "(define (double x)\n" +
@@ -1001,6 +1200,7 @@ public class RacketEvaluationTests {
                 "(* x 3))\n" +
                 "(triple 21)";
         inter = new DrRacketInterpreter(s);
+        inter.master();
         //assertEquals(Float.toString(63), inter.evaluateExpressions());
 
     }
