@@ -7,10 +7,10 @@ import java.util.HashMap;
 public class Main {
 
     public static void main(String[] args) {
-        String test = "(cond [true 1] [false (+ 1 #\\c)] [else (< 1 2)])";
+        String test = "0+3i";
 
         SyntaxChecker syntaxChecker = new SyntaxChecker();
-        System.out.println(syntaxChecker.syntaxCheck(test)); System.out.println();
+        //System.out.println(syntaxChecker.syntaxCheck(test)); System.out.println();
 
 
         try {

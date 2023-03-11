@@ -37,9 +37,30 @@ class SyntaxCheckerTest {
         assertTrue(syntaxChecker.countQuotationsMarks("\"test\"\""));
     }
 
-    @Test
-    void syntaxCheck() {
 
+    @Test
+    void literalCheck() {
+        assertEquals("", syntaxChecker.syntaxCheck("123"));         // Number
+        assertEquals("", syntaxChecker.syntaxCheck("3/2 5.5"));
+        assertEquals("", syntaxChecker.syntaxCheck("#true"));       // Boolean
+        assertEquals("", syntaxChecker.syntaxCheck("#t #f #false"));
+        assertEquals("", syntaxChecker.syntaxCheck("'name '+"));    // Symbol
+        assertEquals("", syntaxChecker.syntaxCheck("\"abcdef\""));        // String
+        assertEquals("", syntaxChecker.syntaxCheck("\"This is a string\" \"This is a string with \\\" inside\""));
+        assertEquals("", syntaxChecker.syntaxCheck("#\\a"));         // Character
+        assertEquals("", syntaxChecker.syntaxCheck("#\\b #\\space"));
+    }
+
+    @Test
+    void preDefinedVariablesCheck() {
+        assertEquals("", syntaxChecker.syntaxCheck("empty"));
+        assertEquals("", syntaxChecker.syntaxCheck("false true empty e pi null"));
+
+        assertEquals("emptyy: this variable is not defined", syntaxChecker.syntaxCheck("emptyy"));
+    }
+
+    @Test
+    void onNumbersCheck() {
         assertEquals("", syntaxChecker.syntaxCheck("(* 5 3)"));
         assertEquals("", syntaxChecker.syntaxCheck("(* 5 3 2)"));
         assertEquals("", syntaxChecker.syntaxCheck("(+ 2/3 1/16)"));
@@ -55,6 +76,117 @@ class SyntaxCheckerTest {
         assertEquals("", syntaxChecker.syntaxCheck("(> 42 2/5)"));
         assertEquals("", syntaxChecker.syntaxCheck("(>= 42 42)"));
         assertEquals("", syntaxChecker.syntaxCheck("(abs -12)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(acos 0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(add1 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(angle (make-polar 3 4))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(asin 0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(atan 0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(atan 0.5)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(atan 3 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(atan -2 -1)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(ceiling 12.3)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(complex? 1-2i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(conjugate 3+4i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(conjugate -2-5i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(conjugate (make-polar 3 4))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(cos pi)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(cosh 10)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(current-seconds)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(denominator 2/3)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(even? 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(exact->inexact 12)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(exact? (sqrt 2))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(exp -2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(expt 16 1/2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(expt 3 -4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(floor 12.3)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(gcd 6 12 8)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(imag-part 3+4i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(inexact->exact 12.0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(inexact? 1-2i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(integer->char 42)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(integer-sqrt 11)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(integer-sqrt -11)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(integer? (sqrt 2))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(lcm 6 12 8)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(log 12)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(magnitude (make-polar 3 4))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(make-polar 3 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(make-rectangular 3 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(max 3 2 8 7 2 9 0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(min 3 2 8 7 2 9 0)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(modulo 9 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(modulo 3 -4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(negative? -2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(number->string 42)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(number->string-digits 0.9 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(number->string-digits pi 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(exact? (sqrt 2))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(number? \"hello world\")"));
+        assertEquals("", syntaxChecker.syntaxCheck("(number? 42)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(numerator 2/3)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(odd? 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(positive? -2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(quotient 9 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(quotient 3 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(random 42)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? 1)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? -2.349)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? #i1.23456789)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? (sqrt -1))"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? pi)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? e)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(rational? 1-2i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(real-part 3+4i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(real? 1-2i)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(remainder 9 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(remainder 3 4)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(round 12.3)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sgn -12)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sin pi)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sinh 10)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sqr 8)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sqrt 9)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sqrt 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(sub1 2)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(tan pi)"));
+        assertEquals("", syntaxChecker.syntaxCheck("(zero? 2)"));
+    }
+
+    @Test
+    void onBooleansCheck() {
+
+    }
+
+    @Test
+    void onSymbolsCheck() {
+
+    }
+
+    @Test
+    void onListsCheck() {
+
+    }
+
+    @Test
+    void onPosnsCheck() {
+
+    }
+
+    @Test
+    void onCharactersCheck() {
+
+    }
+
+    @Test
+    void onStringsCheck() {
+
+    }
+
+    @Test
+    void syntaxCheck() {
+
+
         assertEquals("", syntaxChecker.syntaxCheck("(add1 2)"));
         assertEquals("", syntaxChecker.syntaxCheck("(ceiling 12.3)"));
         assertEquals("", syntaxChecker.syntaxCheck("(even? 2)"));
